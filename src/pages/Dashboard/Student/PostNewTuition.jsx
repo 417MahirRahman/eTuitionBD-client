@@ -1,0 +1,136 @@
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Bounce, toast } from "react-toastify";
+
+const PostNewTuition = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const [formDataToSend, setFormDataToSend] = useState(null);
+
+  useEffect(() => {
+    if (!formDataToSend) return;
+
+    const addFood = () => {
+      fetch("http://localhost:3000/tuitionPost", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(formDataToSend),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          toast.success("Food Added Successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+
+          reset();
+          setFormDataToSend(null);
+        })
+        .catch(() => {
+          toast.error("Something went wrong!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        });
+    };
+
+    addFood();
+  }, [formDataToSend, reset]);
+
+  const handleSendPost = (data) => {
+    const formData = {
+      Class: data.class,
+      Subjects: data.subject,
+      Budget: data.budget,
+      Location: data.location,
+      Status:"Pending",
+    };
+    setFormDataToSend(formData);
+  };
+
+  return (
+    <div>
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <h1 className="text-center font-bold mb-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
+          Post New Tuition
+        </h1>
+
+        <form onSubmit={handleSubmit(handleSendPost)}>
+          <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+            <label className="label font-bold">Class</label>
+            <input
+              type="text"
+              className="input w-full"
+              placeholder="Class"
+              {...register("class", { required: "Class is required" })}
+            />
+            {errors.class && (
+              <p className="text-red-500 text-sm">{errors.class.message}</p>
+            )}
+
+            <label className="label font-bold">Subject</label>
+            <input
+              type="text"
+              className="input w-full"
+              placeholder="Write subjects name here....."
+              {...register("subject", { required: "Subject is required" })}
+            />
+            {errors.subject && (
+              <p className="text-red-500 text-sm">{errors.subject.message}</p>
+            )}
+
+            <label className="label font-bold">Budget</label>
+            <input
+              type="text"
+              className="input w-full"
+              placeholder="Write amount here....."
+              {...register("budget", { required: "Budget is required" })}
+            />
+            {errors.budget && (
+              <p className="text-red-500 text-sm">{errors.budget.message}</p>
+            )}
+
+            <label className="label font-bold">Location</label>
+            <input
+              type="text"
+              className="input w-full"
+              placeholder="Write your location here....."
+              {...register("location", { required: "Location is required" })}
+            />
+            {errors.location && (
+              <p className="text-red-500 text-sm">{errors.location.message}</p>
+            )}
+
+            <button
+              type="submit"
+              className="btn bg-[#DC143C] text-white font-bold rounded-xl"
+            >
+              Submit
+            </button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default PostNewTuition;
