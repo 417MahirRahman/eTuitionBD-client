@@ -6,6 +6,8 @@ import Register from "../pages/Register/Register";
 import DashboardLayout from "../layouts/Dashboard";
 import Dashboard from "../layouts/Dashboard";
 import PostNewTuition from "../pages/Dashboard/Student/PostNewTuition";
+import Tuition from "../pages/All_Tuition/Tuition";
+import All_Tuition from "../pages/All_Tuition/All_Tuition";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +17,16 @@ export const router = createBrowserRouter([
       {
         path: "/",
         Component: Home,
+      },
+      {
+        path: "/all-tuition",
+        Component: Tuition,
+        children: [
+          {
+            index: true,
+            Component: All_Tuition
+          }
+        ]
       },
       {
         path: "/tuitionPost",
