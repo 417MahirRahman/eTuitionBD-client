@@ -7,10 +7,11 @@ import { Bounce, toast } from "react-toastify";
 import { PasswordValidation } from "../../utilities/Validation";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const axiosSecure = useAxiosSecure();
   const { auth, createUser, updateUser, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
@@ -32,10 +33,14 @@ const Register = () => {
       }
 
       const result = await createUser(email, password);
+
       const user = result.user;
       await updateUser({ displayName: name, photoURL: Image_URL });
 
       setUser({ ...user, displayName: name, photoURL: Image_URL });
+
+      axiosSecure.post("/users", data);
+
       return user;
     },
     onSuccess: () => {
@@ -102,11 +107,11 @@ const Register = () => {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
-      <h1 className="text-center font-bold text-white mb-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">Register Here</h1>
+      <h1 className="text-center font-bold text-white mb-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
+        Register Here
+      </h1>
 
-      <form
-        onSubmit={handleSubmit(handleRegister)}
-      >
+      <form onSubmit={handleSubmit(handleRegister)}>
         <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
           <label className="label font-bold">Name</label>
           <input
@@ -117,6 +122,20 @@ const Register = () => {
           />
           {errors.name && (
             <p className="text-red-500 text-sm">{errors.name.message}</p>
+          )}
+
+          <label className="label font-bold">Select Role</label>
+          <select
+            className="input w-full"
+            {...register("role", { required: "Select an Option" })}
+          >
+            <option value="">Student/Tutor</option>
+            <option value="student">Student</option>
+            <option value="tutor">Tutor</option>
+          </select>
+
+          {errors.role && (
+            <p className="text-red-500 text-sm">{errors.role.message}</p>
           )}
 
           <label className="label font-bold">Photo URL</label>
@@ -161,8 +180,11 @@ const Register = () => {
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password.message}</p>
           )}
-          
-          <button type="submit" className="btn bg-[#DC143C] text-white font-bold rounded-xl">
+
+          <button
+            type="submit"
+            className="btn bg-[#DC143C] text-white font-bold rounded-xl"
+          >
             Register
           </button>
 

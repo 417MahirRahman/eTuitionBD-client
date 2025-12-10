@@ -49,7 +49,7 @@ const Dropdown = () => {
         </summary>
         <ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm">
           <li>
-            <NavLink to={"/addFood"} className="text-black font-bold">Add Food</NavLink>
+            <NavLink to={"/dashboard"} className="text-black font-bold">Dashboard</NavLink>
             <NavLink to={"/myFood"} className="text-black font-bold">Manage My Foods</NavLink>
             <NavLink to={"/myFoodReq"} className="text-black font-bold">My Food Requests</NavLink>
           </li>

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
+import useRole from "../../../hooks/useRole";
 
 const PostNewTuition = () => {
   const [formDataToSend, setFormDataToSend] = useState(null);
   const token = localStorage.getItem("token");
+  const [role] = useRole()
+  console.log("Role",role)
 
   const {
     register,

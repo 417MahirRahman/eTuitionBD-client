@@ -37,13 +37,13 @@ const AuthProvider = ({ children }) => {
     const unSubscribed = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        const loggedUser = {email: currentUser.email}
+        const user = {email: currentUser.email}
         fetch("http://localhost:3000/getToken", {
           method: 'POST',
           headers: {
             'content-type':'application/json'
           },
-          body: JSON.stringify(loggedUser)
+          body: JSON.stringify(user)
         })
           .then((res) => res.json())
           .then((data) => {
