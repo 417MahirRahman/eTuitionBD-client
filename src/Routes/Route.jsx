@@ -8,6 +8,7 @@ import Dashboard from "../layouts/Dashboard";
 import PostNewTuition from "../pages/Dashboard/Student/PostNewTuition";
 import Tuition from "../pages/All_Tuition/Tuition";
 import All_Tuition from "../pages/All_Tuition/All_Tuition";
+import TuitionDetails from "../pages/TuitionDetails/TuitionDetails";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             Component: All_Tuition
+          },
+          {
+            path: ":id",
+            Component: TuitionDetails
           }
         ]
       },

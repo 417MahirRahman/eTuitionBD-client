@@ -14,7 +14,7 @@ const All_Tuition = () => {
       setData(result);
     };
     loadData();
-  }, [user]);
+  }, [user, data]);
 
   if (loading) {
     return <Loader />;
@@ -22,7 +22,7 @@ const All_Tuition = () => {
 
   return (
     <div className="mb-20">
-      <h1 className="text-center font-bold text-white my-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
+      <h1 className="text-center font-bold my-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
         ALL TUITIONS
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-3 lg:p-5 xl:p-7 gap-10 lg:gap-15 py-5">
@@ -50,7 +50,7 @@ const All_Tuition = () => {
               </h2>
               <div className="card-actions">
                 <Link
-                  to={`/availableFoods/${tuition._id}`}
+                  to={`/all-tuition/${tuition._id}`}
                   className="btn bg-[#DC143C] text-white font-bold rounded-xl"
                 >
                   View Details
