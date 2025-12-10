@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
 
 const PostNewTuition = () => {
+  const [formDataToSend, setFormDataToSend] = useState(null);
+  const token = localStorage.getItem("token");
+
   const {
     register,
     handleSubmit,
@@ -10,15 +13,16 @@ const PostNewTuition = () => {
     formState: { errors },
   } = useForm();
 
-  const [formDataToSend, setFormDataToSend] = useState(null);
-
   useEffect(() => {
     if (!formDataToSend) return;
 
-    const addFood = () => {
+    const addTuition = () => {
       fetch("http://localhost:3000/tuitionPost", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(formDataToSend),
       })
         .then((res) => res.json())
@@ -53,8 +57,8 @@ const PostNewTuition = () => {
         });
     };
 
-    addFood();
-  }, [formDataToSend, reset]);
+    addTuition();
+  }, [formDataToSend, reset, token]);
 
   const handleSendPost = (data) => {
     const formData = {
@@ -62,7 +66,7 @@ const PostNewTuition = () => {
       Subjects: data.subject,
       Budget: data.budget,
       Location: data.location,
-      Status:"Pending",
+      Status: "Pending",
     };
     setFormDataToSend(formData);
   };
