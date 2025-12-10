@@ -1,14 +1,47 @@
 import React from "react";
-import { Link } from "react-router";
+import { useContext } from "react";
+import { Link, NavLink } from "react-router";
+import AuthContext from "../../../providers/AuthContext";
+import Dropdown from "../../../utilities/Dropdown";
 
 const Navbar = () => {
+  const { user } = useContext(AuthContext);
+
+  const activeStyle =
+    "text-black lg: font-bold text-2xl border-b-4 border-white";
+  const normalStyle = "font-bold text-xl";
   const links = (
     <div className="flex flex-col space-y-2 lg:flex-row lg:space-x-10 text-lg">
-      <Link to={"/"}>Home</Link>
-      <Link>Tuitions</Link>
-      <Link>Tutors</Link>
-      <Link>About</Link>
-      <Link>Contact</Link>
+      <NavLink
+        to={"/"}
+        className={({ isActive }) => (isActive ? activeStyle : normalStyle)}
+      >
+        Home
+      </NavLink>
+      <NavLink
+        to={"/all-tuition"}
+        className={({ isActive }) => (isActive ? activeStyle : normalStyle)}
+      >
+        Tuitions
+      </NavLink>
+      <NavLink
+        to={"/all-tutor"}
+        className={({ isActive }) => (isActive ? activeStyle : normalStyle)}
+      >
+        Tutors
+      </NavLink>
+      <NavLink
+        to={"/about"}
+        className={({ isActive }) => (isActive ? activeStyle : normalStyle)}
+      >
+        About
+      </NavLink>
+      <NavLink
+        to={"/contact"}
+        className={({ isActive }) => (isActive ? activeStyle : normalStyle)}
+      >
+        Contact
+      </NavLink>
     </div>
   );
 
@@ -47,7 +80,18 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end">
-          <Link to={'/login'}>Login</Link>
+          {user ? (
+            <div>
+              <Dropdown></Dropdown>
+            </div>
+          ) : (
+            <Link
+              to={"/login"}
+              className="btn btn-lg bg-white text-[#DC143C] font-bold rounded-xl border-none"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </div>
