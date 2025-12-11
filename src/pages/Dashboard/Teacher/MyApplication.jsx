@@ -89,7 +89,7 @@ const MyApplication = () => {
           MY TUITIONS
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-3 lg:p-5 xl:p-7 gap-10 lg:gap-15 py-5">
-          {data.map((tutor) => (
+          {data.map((tutor) => (tutor.Status === 'Pending' &&
             <div
               key={tutor._id}
               className="card w-96 bg-base-100 card-lg shadow-sm"
