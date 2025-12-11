@@ -18,6 +18,7 @@ import MyTuitions from "../pages/Dashboard/Student/MyTuitions";
 import AppliedTutors from "../pages/Dashboard/Student/AppliedTutors";
 import PaymentSuccess from "../pages/Dashboard/Student/PaymentSuccess";
 import PaymentHistory from "../pages/Dashboard/Student/PaymentHistory";
+import MyProfile from "../pages/Dashboard/Student/MyProfile";
 
 export const router = createBrowserRouter([
   {
@@ -107,6 +108,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/profileSettings",
+        element: <StudentRoute>
+          <MyProfile></MyProfile>
+        </StudentRoute>
       },
       //-----Student Pages End-----\\
 
