@@ -17,6 +17,7 @@ import RevenueHistory from "../pages/Dashboard/Teacher/RevenueHistory";
 import MyTuitions from "../pages/Dashboard/Student/MyTuitions";
 import AppliedTutors from "../pages/Dashboard/Student/AppliedTutors";
 import PaymentSuccess from "../pages/Dashboard/Student/PaymentSuccess";
+import PaymentHistory from "../pages/Dashboard/Student/PaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,14 @@ export const router = createBrowserRouter([
         element: (
           <StudentRoute>
             <AppliedTutors></AppliedTutors>
+          </StudentRoute>
+        ),
+      },
+      {
+        path: "/dashboard/paymentHistory",
+        element: (
+          <StudentRoute>
+            <PaymentHistory></PaymentHistory>
           </StudentRoute>
         ),
       },

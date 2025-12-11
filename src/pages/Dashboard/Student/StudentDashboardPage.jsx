@@ -43,7 +43,7 @@ const StudentDashboardPage = () => {
       {/* Payments */}
       <li>
         <Link
-          to={"/dashboard/payments"}
+          to={"/dashboard/paymentHistory"}
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Payments"
         >
