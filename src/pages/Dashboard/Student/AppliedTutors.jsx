@@ -15,7 +15,7 @@ const AppliedTutors = () => {
     const loadData = async () => {
       const result = await axiosSecure(`/tuitionApplication/${user.email}`);
       setData(result.data.result);
-      //console.log("result", result.data.result)
+      console.log("result", result.data.result);
       setLoading(false);
     };
     loadData();
@@ -25,6 +25,14 @@ const AppliedTutors = () => {
     return <Loader></Loader>;
   }
 
+  //Handle Approve Button
+  const handleApproveBtn = async (paymentInfo) => {
+    const res = await axiosSecure.post("/create-checkout-session", paymentInfo);
+    console.log(res.data);
+    window.location.href = res.data.url;
+  };
+
+  //Handle Reject Button
   const handleRejectBtn = (id) => {
     const formData = {
       Status: "Rejected",
@@ -59,17 +67,37 @@ const AppliedTutors = () => {
               <div>
                 {tuition.Status === "Pending" && (
                   <div className="card-actions">
-                    <button className="btn btn-primary">Approve</button>
+                    <button
+                      onClick={() => {
+                        const paymentInfo = {
+                          studentID: tuition.tuitionId,
+                          studentEmail: user.email,
+                          tutorID: tuition._id,
+                          tutorEmail: tuition.Email,
+                          tutorSalary: tuition.Expected_Salary,
+                        };
+                        handleApproveBtn(paymentInfo);
+                      }}
+                      className="btn btn-primary"
+                    >
+                      Approve
+                    </button>
                     <button
                       onClick={() => {
                         handleRejectBtn(tuition._id);
                       }}
                       className="btn btn-primary"
-                    >Reject</button>
+                    >
+                      Reject
+                    </button>
                   </div>
                 )}
-                {tuition.Status === "Rejected" && <button className="btn btn-primary">Rejected</button>}
-                {tuition.Status === "Approved" && <button className="btn btn-primary">Approved</button>}
+                {tuition.Status === "Rejected" && (
+                  <button className="btn btn-primary">Rejected</button>
+                )}
+                {tuition.Status === "Approved" && (
+                  <button className="btn btn-primary">Approved</button>
+                )}
               </div>
             </div>
           </div>

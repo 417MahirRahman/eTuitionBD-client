@@ -16,6 +16,7 @@ import OngoingTuition from "../pages/Dashboard/Teacher/OngoingTuition";
 import RevenueHistory from "../pages/Dashboard/Teacher/RevenueHistory";
 import MyTuitions from "../pages/Dashboard/Student/MyTuitions";
 import AppliedTutors from "../pages/Dashboard/Student/AppliedTutors";
+import PaymentSuccess from "../pages/Dashboard/Student/PaymentSuccess";
 
 export const router = createBrowserRouter([
   {
@@ -65,9 +66,11 @@ export const router = createBrowserRouter([
       //-----Student Pages Start-----\\
       {
         path: "/dashboard/myTuitions",
-        element: <StudentRoute>
-          <MyTuitions></MyTuitions>
-        </StudentRoute>
+        element: (
+          <StudentRoute>
+            <MyTuitions></MyTuitions>
+          </StudentRoute>
+        ),
       },
       {
         path: "/dashboard/tuitionPost",
@@ -79,15 +82,22 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/appliedTutors",
-        element: <StudentRoute>
-          <AppliedTutors></AppliedTutors>
-        </StudentRoute>
+        element: (
+          <StudentRoute>
+            <AppliedTutors></AppliedTutors>
+          </StudentRoute>
+        ),
       },
       {
-        path: "/dashboard/payments"
+        path: "/dashboard/paymentSuccess",
+        element: (
+          <StudentRoute>
+            <PaymentSuccess></PaymentSuccess>
+          </StudentRoute>
+        ),
       },
       {
-        path: "/dashboard/profileSettings"
+        path: "/dashboard/profileSettings",
       },
       //-----Student Pages End-----\\
 
