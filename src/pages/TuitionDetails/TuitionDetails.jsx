@@ -92,6 +92,7 @@ const TuitionDetails = () => {
     const formData = {
       ...Data,
       tuitionId: data._id,
+      studentEmail: data.Email,
       Name: Data.Name,
       Email: Data.Email,
       Qualification: Data.Qualification,
