@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import Loader from "../../utilities/Loader";
 import { Bounce, toast } from "react-toastify";
+import useRole from "../../hooks/useRole";
+import AuthContext from "../../providers/AuthContext";
 
 const TuitionDetails = () => {
+  const {user} = useContext(AuthContext)
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const [role] = useRole();
 
   const {
     register,
@@ -104,7 +108,7 @@ const TuitionDetails = () => {
         TUITION DETAILS
       </h1>
 
-      {/* Food Info */}
+      {/* Tuition Info */}
       <div
         data-aos="flip-left"
         className="hero flex justify-end bg-linear-to-r from-white to-[#DC143C] mt-10 w-full md:w-3/4 mx-auto rounded-xl shadow-2xl"
@@ -115,7 +119,7 @@ const TuitionDetails = () => {
             <p className="font-semibold mt-2">Subjects: {data.Subjects}</p>
             <p className="font-semibold">Budget: {data.Budget}</p>
             <p className="font-semibold">Location: {data.Location}</p>
-            {
+            {role==='tutor' &&
               <button
                 className="btn bg-[#DC143C] text-white font-bold rounded-xl border-none"
                 onClick={() =>
@@ -142,7 +146,8 @@ const TuitionDetails = () => {
             {...register("Name", { required: "Name is required" })}
             type="text"
             className="input input-bordered w-full"
-            placeholder="Your Name"
+            defaultValue={user.displayName}
+            readOnly
           />
           {errors.Name && <p className="text-red-500">{errors.Name.message}</p>}
 
@@ -151,7 +156,8 @@ const TuitionDetails = () => {
             {...register("Email", { required: "Email is required" })}
             type="email"
             className="input input-bordered w-full"
-            placeholder="Your Email"
+            defaultValue={user.email}
+            readOnly
           />
           {errors.Email && (
             <p className="text-red-500">{errors.Email.message}</p>
