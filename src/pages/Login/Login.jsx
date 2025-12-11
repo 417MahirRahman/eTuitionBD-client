@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"; 
+import React, { useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import AuthContext from "../../providers/AuthContext";
 import { Bounce, toast } from "react-toastify";
@@ -6,11 +6,12 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const { auth, login } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const location = useLocation();
   const provider = new GoogleAuthProvider();
@@ -53,12 +54,24 @@ const Login = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result);
-        navigate(`${location.state ? location.state : "/"}`);
         toast.success("Login Successful", {
           position: "top-right",
           autoClose: 5000,
           theme: "light",
           transition: Bounce,
+        });
+
+        const userInfo = {
+          name: result.user.displayName,
+          role: "student",
+          Image_URL: result.user.photoURL,
+          phoneNumber: "",
+          email: result.user.email,
+        };
+
+        axiosSecure.post("/users", userInfo).then((res) => {
+          console.log("User data stored in the database", res.data)
+          navigate(`${location.state ? location.state : "/"}`);
         });
       })
       .catch((error) => {
@@ -79,7 +92,9 @@ const Login = () => {
 
   return (
     <div className="flex flex-col min-h-screen justify-center items-center">
-      <h1 className="text-center font-bold text-white mb-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">Login Now</h1>
+      <h1 className="text-center font-bold text-white mb-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
+        Login Now
+      </h1>
 
       <form onSubmit={handleSubmit(handleLogin)}>
         <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border-2 shadow-2xl p-4">
@@ -113,7 +128,10 @@ const Login = () => {
             <p className="text-red-500 text-sm">{errors.password.message}</p>
           )}
 
-          <button type="submit" className="btn bg-[#DC143C] text-white font-bold rounded-xl">
+          <button
+            type="submit"
+            className="btn bg-[#DC143C] text-white font-bold rounded-xl"
+          >
             Login
           </button>
 

@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
 import useRole from "../../../hooks/useRole";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import AuthContext from "../../../providers/AuthContext";
 
 const PostNewTuition = () => {
   const [formDataToSend, setFormDataToSend] = useState(null);
-  const token = localStorage.getItem("token");
-  const [role] = useRole()
-  console.log("Role",role)
+  const axiosSecure = useAxiosSecure();
+  const {user} = useContext(AuthContext)
+  const [role] = useRole();
+  console.log("Role", role);
 
   const {
     register,
@@ -20,17 +23,10 @@ const PostNewTuition = () => {
     if (!formDataToSend) return;
 
     const addTuition = () => {
-      fetch("http://localhost:3000/tuitionPost", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formDataToSend),
-      })
-        .then((res) => res.json())
+      axiosSecure
+        .post("/tuitionPost", formDataToSend)
         .then(() => {
-          toast.success("Food Added Successfully", {
+          toast.success("Tuition Posted Successfully", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -61,7 +57,7 @@ const PostNewTuition = () => {
     };
 
     addTuition();
-  }, [formDataToSend, reset, token]);
+  }, [formDataToSend, reset, axiosSecure]);
 
   const handleSendPost = (data) => {
     const formData = {
@@ -70,6 +66,7 @@ const PostNewTuition = () => {
       Budget: data.budget,
       Location: data.location,
       Status: "Pending",
+      Email: user.email
     };
     setFormDataToSend(formData);
   };

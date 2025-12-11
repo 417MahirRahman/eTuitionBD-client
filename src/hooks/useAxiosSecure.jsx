@@ -9,7 +9,7 @@ const useAxiosSecure = () => {
   useEffect(() => {
     const reqInterceptor = axiosSecure.interceptors.request.use((config) => {
       const token = localStorage.getItem("token");
-      console.log("Axios Token:", localStorage.getItem("token"));
+      //console.log("Axios Token:", localStorage.getItem("token"));
 
       config.headers.Authorization = `Bearer ${token}`;
       return config;

@@ -149,6 +149,17 @@ const Register = () => {
             <p className="text-red-500 text-sm">{errors.Image_URL.message}</p>
           )}
 
+          <label className="label font-bold">Phone</label>
+          <input
+            type="text"
+            className="input w-full"
+            placeholder="01******"
+            {...register("phoneNumber", { required: "Phone number is required" })}
+          />
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
+          )}
+
           <label className="label font-bold">Email</label>
           <input
             type="email"

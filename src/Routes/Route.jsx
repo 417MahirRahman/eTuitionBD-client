@@ -14,6 +14,7 @@ import TutorRoute from "./TutorRoute";
 import MyApplication from "../pages/Dashboard/Teacher/MyApplication";
 import OngoingTuition from "../pages/Dashboard/Teacher/OngoingTuition";
 import RevenueHistory from "../pages/Dashboard/Teacher/RevenueHistory";
+import MyTuitions from "../pages/Dashboard/Student/MyTuitions";
 
 export const router = createBrowserRouter([
   {
@@ -63,7 +64,9 @@ export const router = createBrowserRouter([
       //-----Student Pages Start-----\\
       {
         path: "/dashboard/myTuitions",
-
+        element: <StudentRoute>
+          <MyTuitions></MyTuitions>
+        </StudentRoute>
       },
       {
         path: "/dashboard/tuitionPost",

@@ -2,19 +2,21 @@ import React, { use, useEffect, useState } from "react";
 import { Link } from "react-router";
 import AuthContext from "../../providers/AuthContext";
 import Loader from "../../utilities/Loader";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const All_Tuition = () => {
   const { user, loading } = use(AuthContext);
+  const axiosSecure = useAxiosSecure()
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
-      const res = await fetch("http://localhost:3000/allTuitions");
-      const result = await res.json();
-      setData(result);
+      const result = await axiosSecure("/allTuitions")
+      setData(result.data);
+      //console.log("result",result.data)
     };
     loadData();
-  }, [user, data]);
+  }, [user, axiosSecure]);
 
   if (loading) {
     return <Loader />;
@@ -29,25 +31,12 @@ const All_Tuition = () => {
         {data.map((tuition) => (
           <div
             key={tuition._id}
-            className="card bg-base-100 w-full lg:w-11/12 lg:mx-auto shadow-lg hover:shadow-2xl"
+            className="card w-96 bg-base-100 card-lg shadow-sm"
           >
-            <figure className="p-7">
-              
-            </figure>
-            <div className="card-body px-10 mt-5">
-              <div className="flex items-center gap-2">
-                {/* <div className="avatar">
-                  <div className="ring-primary ring-offset-base-100 w-6 rounded-full ring-2 ring-offset-2">
-                    <img src={tuition.donatorImage} alt="" />
-                  </div>
-                </div> */}
-                <h1 className="font-bold text-xl">Class: {tuition.Class}</h1>
-              </div>
-              <h2 className="card-title font-bold text-lg">Subjects: {tuition.Subjects}</h2>
-              <h2 className="font-bold text-sm">Budget: {tuition.Budget}</h2>
-              <h2 className="font-bold text-sm">
-                Location: {tuition.Location}
-              </h2>
+            <div className="card-body">
+              <h2 className="card-title">Class: {tuition.Class}</h2>
+              <p>Subjects: {tuition.Subjects}</p>
+              <p>Budget: {tuition.Budget}</p>
               <div className="card-actions">
                 <Link
                   to={`/all-tuition/${tuition._id}`}

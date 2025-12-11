@@ -3,6 +3,9 @@ import AuthContext from "../providers/AuthContext";
 import { toast, Bounce } from "react-toastify";
 import { IoIosLogOut } from "react-icons/io";
 import { Link, NavLink } from "react-router";
+import { MdSpaceDashboard } from "react-icons/md";
+import { IoLogOut } from "react-icons/io5";
+import { BsPersonCircle } from "react-icons/bs";
 
 const Dropdown = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -48,14 +51,26 @@ const Dropdown = () => {
           />
         </summary>
         <ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm">
-          <li>
-            <NavLink to={"/dashboard"} className="text-black font-bold">Dashboard</NavLink>
-            <NavLink to={"/myFood"} className="text-black font-bold">Manage My Foods</NavLink>
-            <NavLink to={"/myFoodReq"} className="text-black font-bold">My Food Requests</NavLink>
+          <li className="flex gap-1">
+            <div>
+              <BsPersonCircle />
+              <NavLink to={"/profileSettings"} className="text-black font-bold">
+                Profile
+              </NavLink>
+            </div>
           </li>
           <li className="flex gap-1">
             <div>
-              <IoIosLogOut className="text-black font-bold" />
+              <MdSpaceDashboard />
+              <NavLink to={"/dashboard"} className="text-black font-bold">
+                Dashboard
+              </NavLink>
+            </div>
+          </li>
+          <li className="flex gap-1">
+            <div>
+              <IoLogOut />
+              {/* <IoIosLogOut className="text-black font-bold" /> */}
               <Link
                 onClick={handleLogOut}
                 to={"/login"}
