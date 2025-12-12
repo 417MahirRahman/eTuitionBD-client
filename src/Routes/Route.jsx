@@ -65,6 +65,18 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      //-----Admin Pages Start-----\\
+      {
+        path: "/dashboard/reportAnalytics"
+      },
+      {
+        path: "/dashboard/usersManagement"
+      },
+      {
+        path: "/dashboard/tuitionManagement"
+      },
+      //-----Admin Pages End-----\\
+
       //-----Student Pages Start-----\\
       {
         path: "/dashboard/myTuitions",

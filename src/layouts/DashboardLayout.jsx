@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router";
 import TutorDashboardPage from "../pages/Dashboard/Teacher/TutorDashboardPage";
 import useRole from "../hooks/useRole";
 import StudentDashboardPage from "../pages/Dashboard/Student/StudentDashboardPage";
+import AdminDashboardPage from "../pages/Dashboard/Admin/AdminDashboardPage";
 
 const DashboardLayout = () => {
   const [role] = useRole();
@@ -75,6 +76,7 @@ const DashboardLayout = () => {
                   <span className="is-drawer-close:hidden">Homepage</span>
                 </Link>
               </li>
+              {role === "admin" && <AdminDashboardPage></AdminDashboardPage>}
 
               {role === "tutor" && <TutorDashboardPage></TutorDashboardPage>}
 
