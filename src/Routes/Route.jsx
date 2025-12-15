@@ -22,6 +22,7 @@ import MyProfile from "../pages/Dashboard/Student/MyProfile";
 import AdminRoute from "./AdminRoute";
 import UsersManagement from "../pages/Dashboard/Admin/UsersManagement";
 import TuitionManagement from "../pages/Dashboard/Admin/TuitionManagement";
+import Reports_and_Analytics from "../pages/Dashboard/Admin/Reports_and_Analytics";
 
 export const router = createBrowserRouter([
   {
@@ -71,6 +72,11 @@ export const router = createBrowserRouter([
       //-----Admin Pages Start-----\\
       {
         path: "/dashboard/reportAnalytics",
+        element: (
+          <AdminRoute>
+            <Reports_and_Analytics></Reports_and_Analytics>
+          </AdminRoute>
+        ),
       },
       {
         path: "/dashboard/usersManagement",

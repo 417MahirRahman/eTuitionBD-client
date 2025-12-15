@@ -6,17 +6,27 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const All_Tuition = () => {
   const { user, loading } = use(AuthContext);
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   const [data, setData] = useState([]);
+  const [totalData, setTotalData] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const limit = 3;
 
   useEffect(() => {
     const loadData = async () => {
-      const result = await axiosSecure("/allTuitions")
-      setData(result.data);
+      const result = await axiosSecure(
+        `/allTuitions?limit=${limit}&skip=${currentPage * limit}`
+      );
+      setData(result.data.result);
+      setTotalData(result.data.total);
+      const page = Math.ceil(totalData / limit);
+      setTotalPage(page);
       //console.log("result",result.data)
+      //console.log("total data",result.data.total)
     };
     loadData();
-  }, [user, axiosSecure]);
+  }, [user, axiosSecure, totalData, currentPage]);
 
   if (loading) {
     return <Loader />;
@@ -27,6 +37,7 @@ const All_Tuition = () => {
       <h1 className="text-center font-bold my-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
         ALL TUITIONS
       </h1>
+      <h1>Total Tuition ({totalData})</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-3 lg:p-5 xl:p-7 gap-10 lg:gap-15 py-5">
         {data.map((tuition) => (
           <div
@@ -48,6 +59,48 @@ const All_Tuition = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Page Number */}
+      <div>
+        {currentPage > 0 && (
+          <button
+            onClick={() => {
+              setCurrentPage(currentPage - 1);
+            }}
+            className="join-item btn btn-outline"
+          >
+            Previous
+          </button>
+        )}
+
+        {[...Array(totalPage).keys()].map((index) => (
+          <div
+            onClick={() => {
+              setCurrentPage(index);
+            }}
+            className="join"
+          >
+            <input
+              className={`join-item btn ${
+                index === currentPage && "btn-primary"
+              } btn-square`}
+              value={index+1}
+              name="options"
+            />
+          </div>
+        ))}
+
+        {currentPage < totalPage-1 && (
+          <button
+            onClick={() => {
+              setCurrentPage(currentPage + 1);
+            }}
+            className="join-item btn btn-outline"
+          >
+            Next
+          </button>
+        )}
       </div>
     </div>
   );

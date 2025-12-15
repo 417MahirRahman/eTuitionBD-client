@@ -36,7 +36,6 @@ const PaymentHistory = () => {
             <tr className="text-center">
               <th>Serial Number</th>
               <th>Transaction-ID</th>
-              <th>From</th>
               <th>To</th>
               <th>Amount</th>
               <th>Payment Status</th>
@@ -48,7 +47,6 @@ const PaymentHistory = () => {
               <tr className="text-center">
                 <th>{index + 1}</th>
                 <td>{info.transactionID}</td>
-                <td>{info.studentEmail}</td>
                 <td>{info.tutorEmail}</td>
                 <td>{info.Amount}</td>
                 <td>{info.paymentStatus}</td>
