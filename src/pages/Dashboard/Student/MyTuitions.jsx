@@ -12,11 +12,7 @@ const MyTuitions = () => {
   const [selectedTuition, setSelectedTuition] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   /*FETCH DATA*/
   useEffect(() => {
@@ -33,22 +29,17 @@ const MyTuitions = () => {
   /*OPEN MODAL*/
   const openModal = (tuition) => {
     setSelectedTuition(tuition);
-    reset(tuition)
+    reset(tuition);
     document.getElementById("update_modal").showModal();
   };
 
   /*UPDATE*/
   const handleUpdate = async (formData) => {
     try {
-      await axiosSecure.put(
-        `/tuitionPost/${selectedTuition._id}`,
-        formData
-      );
+      await axiosSecure.put(`/tuitionPost/${selectedTuition._id}`, formData);
       setData((prev) =>
         prev.map((item) =>
-          item._id === selectedTuition._id
-            ? { ...item, ...formData }
-            : item
+          item._id === selectedTuition._id ? { ...item, ...formData } : item
         )
       );
 
@@ -83,31 +74,34 @@ const MyTuitions = () => {
       <h1 className="text-center font-bold text-3xl my-10">MY TUITIONS</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-5">
-        {data.map((tuition) => (
-          <div key={tuition._id} className="card bg-base-100 shadow">
-            <div className="card-body">
-              <h2 className="card-title">Class: {tuition.Class}</h2>
-              <p>Subjects: {tuition.Subjects}</p>
-              <p>Budget: {tuition.Budget}</p>
-              <p>Location: {tuition.Location}</p>
+        {data.map(
+          (tuition) =>
+            tuition.Status === "Approved" && (
+              <div key={tuition._id} className="card bg-base-100 shadow">
+                <div className="card-body">
+                  <h2 className="card-title">Class: {tuition.Class}</h2>
+                  <p>Subjects: {tuition.Subjects}</p>
+                  <p>Budget: {tuition.Budget}</p>
+                  <p>Location: {tuition.Location}</p>
 
-              <div className="flex gap-2 mt-4">
-                <button
-                  onClick={() => openModal(tuition)}
-                  className="btn btn-primary"
-                >
-                  Update
-                </button>
-                <button
-                  onClick={() => handleDelete(tuition._id)}
-                  className="btn btn-error"
-                >
-                  Delete
-                </button>
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      onClick={() => openModal(tuition)}
+                      className="btn btn-primary"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => handleDelete(tuition._id)}
+                      className="btn btn-error"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            )
+        )}
       </div>
 
       {/*SINGLE MODAL*/}
@@ -149,9 +143,7 @@ const MyTuitions = () => {
               <button
                 type="button"
                 className="btn"
-                onClick={() =>
-                  document.getElementById("update_modal").close()
-                }
+                onClick={() => document.getElementById("update_modal").close()}
               >
                 Cancel
               </button>
