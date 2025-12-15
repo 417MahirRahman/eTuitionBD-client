@@ -21,6 +21,7 @@ import PaymentHistory from "../pages/Dashboard/Student/PaymentHistory";
 import MyProfile from "../pages/Dashboard/Student/MyProfile";
 import AdminRoute from "./AdminRoute";
 import UsersManagement from "../pages/Dashboard/Admin/UsersManagement";
+import TuitionManagement from "../pages/Dashboard/Admin/TuitionManagement";
 
 export const router = createBrowserRouter([
   {
@@ -69,17 +70,23 @@ export const router = createBrowserRouter([
     children: [
       //-----Admin Pages Start-----\\
       {
-        path: "/dashboard/reportAnalytics"
-        
+        path: "/dashboard/reportAnalytics",
       },
       {
         path: "/dashboard/usersManagement",
-        element: <AdminRoute>
-          <UsersManagement></UsersManagement>
-        </AdminRoute>
+        element: (
+          <AdminRoute>
+            <UsersManagement></UsersManagement>
+          </AdminRoute>
+        ),
       },
       {
-        path: "/dashboard/tuitionManagement"
+        path: "/dashboard/tuitionManagement",
+        element: (
+          <AdminRoute>
+            <TuitionManagement></TuitionManagement>
+          </AdminRoute>
+        ),
       },
       //-----Admin Pages End-----\\
 
@@ -126,9 +133,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/profileSettings",
-        element: <StudentRoute>
-          <MyProfile></MyProfile>
-        </StudentRoute>
+        element: (
+          <StudentRoute>
+            <MyProfile></MyProfile>
+          </StudentRoute>
+        ),
       },
       //-----Student Pages End-----\\
 
