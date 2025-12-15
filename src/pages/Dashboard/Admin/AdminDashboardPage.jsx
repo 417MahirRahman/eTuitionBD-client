@@ -9,10 +9,10 @@ const AdminDashboardPage = () => {
         <Link
           to={"/dashboard/reportAnalytics"}
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-          data-tip="My Tuition"
+          data-tip="Report and Analytics"
         >
           <img src="" alt="" className="w-12" />
-          <span className="is-drawer-close:hidden">My Tuition</span>
+          <span className="is-drawer-close:hidden">Report and Analytics</span>
         </Link>
       </li>
 
@@ -21,10 +21,10 @@ const AdminDashboardPage = () => {
         <Link
           to={"/dashboard/usersManagement"}
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-          data-tip="Post New Tuitions"
+          data-tip="Users Management Page"
         >
           <img src="" alt="" className="w-12" />
-          <span className="is-drawer-close:hidden">Post New Tuitions</span>
+          <span className="is-drawer-close:hidden">Users Management</span>
         </Link>
       </li>
 
@@ -33,10 +33,10 @@ const AdminDashboardPage = () => {
         <Link
           to={"/dashboard/tuitionManagement"}
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-          data-tip="Applied Tutors"
+          data-tip="Tuition Management Page"
         >
           <img src="" alt="" className="w-12" />
-          <span className="is-drawer-close:hidden">Applied Tutors</span>
+          <span className="is-drawer-close:hidden">Tuition Management</span>
         </Link>
       </li>
     </div>

@@ -19,6 +19,8 @@ import AppliedTutors from "../pages/Dashboard/Student/AppliedTutors";
 import PaymentSuccess from "../pages/Dashboard/Student/PaymentSuccess";
 import PaymentHistory from "../pages/Dashboard/Student/PaymentHistory";
 import MyProfile from "../pages/Dashboard/Student/MyProfile";
+import AdminRoute from "./AdminRoute";
+import UsersManagement from "../pages/Dashboard/Admin/UsersManagement";
 
 export const router = createBrowserRouter([
   {
@@ -68,9 +70,13 @@ export const router = createBrowserRouter([
       //-----Admin Pages Start-----\\
       {
         path: "/dashboard/reportAnalytics"
+        
       },
       {
-        path: "/dashboard/usersManagement"
+        path: "/dashboard/usersManagement",
+        element: <AdminRoute>
+          <UsersManagement></UsersManagement>
+        </AdminRoute>
       },
       {
         path: "/dashboard/tuitionManagement"

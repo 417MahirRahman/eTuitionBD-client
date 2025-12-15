@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 const AppliedTutors = () => {
   const { user } = useContext(AuthContext);
+  console.log("User:",user)
   const axiosSecure = useAxiosSecure();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
