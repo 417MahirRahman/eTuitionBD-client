@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import { BookOpen, Plus, Users, CreditCard, Settings } from "lucide-react";
 
 const StudentDashboardPage = () => {
   return (
@@ -11,7 +12,7 @@ const StudentDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="My Tuition"
         >
-          <img src="" alt="" className="w-12" />
+          <BookOpen className="size-4" />
           <span className="is-drawer-close:hidden">My Tuition</span>
         </Link>
       </li>
@@ -23,7 +24,7 @@ const StudentDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Post New Tuitions"
         >
-          <img src="" alt="" className="w-12" />
+          <Plus className="size-4" />
           <span className="is-drawer-close:hidden">Post New Tuitions</span>
         </Link>
       </li>
@@ -35,7 +36,7 @@ const StudentDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Applied Tutors"
         >
-          <img src="" alt="" className="w-12" />
+          <Users className="size-4" />
           <span className="is-drawer-close:hidden">Applied Tutors</span>
         </Link>
       </li>
@@ -47,7 +48,7 @@ const StudentDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Payments"
         >
-          <img src="" alt="" className="w-12" />
+          <CreditCard className="size-4" />
           <span className="is-drawer-close:hidden">Payments</span>
         </Link>
       </li>
@@ -59,7 +60,7 @@ const StudentDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Profile Settings"
         >
-          <img src="" alt="" className="w-12" />
+          <Settings className="size-4" />
           <span className="is-drawer-close:hidden">Profile Settings</span>
         </Link>
       </li>

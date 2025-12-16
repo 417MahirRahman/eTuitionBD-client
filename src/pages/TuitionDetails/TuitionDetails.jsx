@@ -6,14 +6,16 @@ import Loader from "../../utilities/Loader";
 import { Bounce, toast } from "react-toastify";
 import useRole from "../../hooks/useRole";
 import AuthContext from "../../providers/AuthContext";
+import { ArrowLeft } from "lucide-react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const TuitionDetails = () => {
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const axiosSecure = useAxiosSecure();
   const [role] = useRole();
 
   const {
@@ -26,35 +28,20 @@ const TuitionDetails = () => {
   useEffect(() => {
     const loadTuitionDetails = async () => {
       setLoading(true);
-      const res = await fetch(`http://localhost:3000/allTuitions/${id}`);
-      //   if (!res.ok) {
-      //     navigate("/detailsNotFound");
-      //     return;
-      //   }
-      const result = await res.json();
-      setData(result.result);
-      console.log("Result:", result.result);
+      const res = await axiosSecure(`allTuitions/${id}`);
+      setData(res.data.result);
+      //console.log("Data:",res.data.result)
       setLoading(false);
     };
     loadTuitionDetails();
-  }, [id, navigate]);
+  }, [id, navigate, axiosSecure]);
 
   const addTuitionMutation = useMutation({
     mutationFn: async (formData) => {
-      const res = await fetch("http://localhost:3000/tutorApplication", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      return res.json();
+      axiosSecure.post("/tutorApplication", formData);
     },
-
     onSuccess: () => {
-      toast.success("Apply Successfully", {
+      toast.success("Applied Successfully", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -66,9 +53,7 @@ const TuitionDetails = () => {
         transition: Bounce,
       });
       reset();
-      document.getElementById(`modal_${data._id}`).close();
     },
-
     onError: () => {
       toast.error("Something went wrong!", {
         position: "top-right",
@@ -104,119 +89,179 @@ const TuitionDetails = () => {
   };
 
   return (
-    <div className="pb-20 p-2">
-      <h1 className="text-center font-bold mt-10 mb-8 text-4xl">
-        TUITION DETAILS
-      </h1>
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-center font-bold mb-8 text-3xl md:text-4xl text-slate-800">
+          TUITION DETAILS
+        </h1>
 
-      {/* Tuition Info */}
-      <div
-        data-aos="flip-left"
-        className="hero flex justify-end bg-linear-to-r from-white to-[#DC143C] mt-10 w-full md:w-3/4 mx-auto rounded-xl shadow-2xl"
-      >
-        <div className="hero-content flex-col lg:flex-row-reverse gap-10">
-          <div>
-            <h1 className="text-3xl font-bold">Class: {data.Class}</h1>
-            <p className="font-semibold mt-2">Subjects: {data.Subjects}</p>
-            <p className="font-semibold">Budget: {data.Budget}</p>
-            <p className="font-semibold">Location: {data.Location}</p>
-            {role==='tutor' &&
+        <div className={role === "tutor" ? "grid grid-cols-1 lg:grid-cols-2 gap-8" : "grid grid-cols-1"}>
+          {/* Tuition Details Section */}
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+            <div className="flex items-center justify-between mb-6">
               <button
-                className="btn bg-[#DC143C] text-white font-bold rounded-xl border-none"
-                onClick={() =>
-                  document.getElementById(`modal_${data._id}`).showModal()
-                }
+                onClick={() => navigate("/all-tuition")}
+                className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
               >
-                Apply
+                <ArrowLeft className="w-5 h-5" />
+                Back
               </button>
-            }
+            </div>
+
+            <div className="space-y-5">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-800 mb-3">
+                  Class Information
+                </h2>
+                <div className="w-16 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full mb-4"></div>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-slate-700">Class:</span>
+                    <span className="text-slate-600">{data.Class}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-slate-700">
+                      Subjects:
+                    </span>
+                    <span className="text-slate-600">{data.Subjects}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-slate-700">
+                      Budget:
+                    </span>
+                    <span className="text-green-600 font-medium">
+                      {data.Budget}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-slate-700">
+                      Location:
+                    </span>
+                    <span className="text-slate-600">{data.Location}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* Apply Form Section */}
+          {role === "tutor" && (
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+              <h2 className="text-2xl font-bold text-slate-800 mb-6">
+                Apply for Tuition
+              </h2>
+              <div className="w-16 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full mb-6"></div>
+
+              <form
+                onSubmit={handleSubmit(handleApplyPost)}
+                className="space-y-5"
+              >
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Name
+                  </label>
+                  <input
+                    {...register("Name", { required: "Name is required" })}
+                    type="text"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                    defaultValue={user?.displayName}
+                    readOnly
+                  />
+                  {errors.Name && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.Name.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Email
+                  </label>
+                  <input
+                    {...register("Email", { required: "Email is required" })}
+                    type="email"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                    defaultValue={user?.email}
+                    readOnly
+                  />
+                  {errors.Email && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.Email.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Qualification
+                  </label>
+                  <input
+                    {...register("Qualification", {
+                      required: "Qualification is required",
+                    })}
+                    type="text"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                    placeholder="Enter your qualification"
+                  />
+                  {errors.Qualification && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.Qualification.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Experience
+                  </label>
+                  <input
+                    {...register("Experience", {
+                      required: "Experience is required",
+                    })}
+                    type="text"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                    placeholder="Enter your experience"
+                  />
+                  {errors.Experience && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.Experience.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Expected Salary
+                  </label>
+                  <input
+                    {...register("Expected_Salary", {
+                      required: "Expected Salary is required",
+                    })}
+                    type="text"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                    placeholder="Enter expected salary"
+                  />
+                  {errors.Expected_Salary && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.Expected_Salary.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex gap-4 pt-4">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-600 hover:to-blue-700  shadow-md hover:shadow-lg"
+                  >
+                    Submit Application
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Modal */}
-      <dialog id={`modal_${data?._id}`} className="modal">
-        <form
-          onSubmit={handleSubmit(handleApplyPost)}
-          className="modal-box bg-white text-black"
-        >
-          <h3 className="font-bold text-lg mb-4 text-center">Apply Tuition</h3>
-
-          <label className="label">Name</label>
-          <input
-            {...register("Name", { required: "Name is required" })}
-            type="text"
-            className="input input-bordered w-full"
-            defaultValue={user.displayName}
-            readOnly
-          />
-          {errors.Name && <p className="text-red-500">{errors.Name.message}</p>}
-
-          <label className="label mt-3">Email</label>
-          <input
-            {...register("Email", { required: "Email is required" })}
-            type="email"
-            className="input input-bordered w-full"
-            defaultValue={user.email}
-            readOnly
-          />
-          {errors.Email && (
-            <p className="text-red-500">{errors.Email.message}</p>
-          )}
-
-          <label className="label mt-3">Qualification</label>
-          <input
-            {...register("Qualification", {
-              required: "Qualification is required",
-            })}
-            type="text"
-            className="input input-bordered w-full"
-            placeholder="Qualification"
-          />
-          {errors.Qualification && (
-            <p className="text-red-500">{errors.Qualification.message}</p>
-          )}
-
-          <label className="label mt-3">Experience</label>
-          <input
-            {...register("Experience", {
-              required: "Experience is required",
-            })}
-            type="text"
-            className="input input-bordered w-full"
-            placeholder="Experience"
-          />
-          {errors.Experience && (
-            <p className="text-red-500">{errors.Experience.message}</p>
-          )}
-
-          <label className="label mt-3">Expected Salary</label>
-          <input
-            {...register("Expected_Salary", {
-              required: "Expected Salary is required",
-            })}
-            type="text"
-            className="input input-bordered w-full"
-            placeholder="Expected Salary"
-          />
-          {errors.Expected_Salary && (
-            <p className="text-red-500">{errors.Expected_Salary.message}</p>
-          )}
-
-          <div className="flex justify-end gap-3 mt-6">
-            <button className="btn bg-[#DC143C] text-white">Apply</button>
-            <button
-              type="button"
-              className="btn"
-              onClick={() =>
-                document.getElementById(`modal_${data._id}`).close()
-              }
-            >
-              Close
-            </button>
-          </div>
-        </form>
-      </dialog>
     </div>
   );
 };

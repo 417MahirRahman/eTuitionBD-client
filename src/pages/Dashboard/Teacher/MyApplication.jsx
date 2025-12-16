@@ -8,7 +8,6 @@ import Loader from "../../../utilities/Loader";
 const MyApplication = () => {
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
-
   const [data, setData] = useState([]);
   const [selectedApp, setSelectedApp] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -45,15 +44,11 @@ const MyApplication = () => {
 
       setData((prev) =>
         prev.map((item) =>
-          item._id === selectedApp._id
-            ? { ...item, ...formData }
-            : item
+          item._id === selectedApp._id ? { ...item, ...formData } : item
         )
       );
-
       document.getElementById("update_modal").close();
       setSelectedApp(null);
-
       Swal.fire("Updated!", "Application updated successfully", "success");
     } catch {
       Swal.fire("Error", "Update failed", "error");
@@ -75,34 +70,74 @@ const MyApplication = () => {
     }
   };
 
+  const pendingApplications = data.filter((app) => app.Status === "Pending");
+
   return (
-    <div className="mb-20">
-      <h1 className="text-center font-bold my-10 text-3xl">
-        MY APPLICATIONS
-      </h1>
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        {pendingApplications.length === 0 ? (
+          <div className="flex justify-center items-center min-h-96">
+            <p className="text-3xl md:text-4xl text-slate-600">
+              No Pending Applications Found
+            </p>
+          </div>
+        ) : (
+          <h1 className="text-center font-bold mb-8 text-3xl md:text-4xl text-slate-800">
+            MY APPLICATIONS
+          </h1>
+        )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-5">
-        {data
-          .filter((app) => app.Status === "Pending")
-          .map((app) => (
-            <div key={app._id} className="card bg-base-100 shadow">
-              <div className="card-body">
-                <h2 className="card-title">{app.Name}</h2>
-                <p>Email: {app.Email}</p>
-                <p>Qualification: {app.Qualification}</p>
-                <p>Experience: {app.Experience}</p>
-                <p>Expected Salary: {app.Expected_Salary}</p>
-
-                <div className="card-actions mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {pendingApplications.map((app) => (
+            <div
+              key={app._id}
+              className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
+            >
+              <div className="p-6">
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-slate-800 mb-1">
+                    Tutor: {app.Name}
+                  </h3>
+                  <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+                </div>
+                <div className="space-y-3 text-slate-600">
+                  <p className="flex items-start">
+                    <span className="font-semibold text-slate-700 mr-2">
+                      Email:
+                    </span>
+                    {app.Email}
+                  </p>
+                  <p className="flex items-start">
+                    <span className="font-semibold text-slate-700 mr-2">
+                      Qualification:
+                    </span>
+                    {app.Qualification}
+                  </p>
+                  <p className="flex items-start">
+                    <span className="font-semibold text-slate-700 mr-2">
+                      Experience:
+                    </span>
+                    {app.Experience}
+                  </p>
+                  <p className="flex items-start">
+                    <span className="font-semibold text-slate-700 mr-2">
+                      Expected Salary:
+                    </span>
+                    <span className="text-green-600 font-medium">
+                      {app.Expected_Salary}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex gap-3 mt-6">
                   <button
-                    className="btn btn-primary"
                     onClick={() => openModal(app)}
+                    className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
                   >
                     Update
                   </button>
                   <button
-                    className="btn btn-error"
                     onClick={() => handleDelete(app._id)}
+                    className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
                   >
                     Delete
                   </button>
@@ -110,55 +145,99 @@ const MyApplication = () => {
               </div>
             </div>
           ))}
-      </div>
-
-      {/*SINGLE MODAL*/}
-      <dialog id="update_modal" className="modal">
-        <div className="modal-box bg-white text-black">
-          <form onSubmit={handleSubmit(handleUpdate)}>
-            <h3 className="font-bold text-lg text-center mb-4">
-              Update Application
-            </h3>
-
-            <input {...register("Name")} readOnly className="input w-full mb-2" />
-            <input {...register("Email")} readOnly className="input w-full mb-2" />
-
-            <input
-              {...register("Qualification", { required: true })}
-              placeholder="Qualification"
-              className="input w-full mb-2"
-            />
-            {errors.Qualification && <p className="text-red-500">Required</p>}
-
-            <input
-              {...register("Experience", { required: true })}
-              placeholder="Experience"
-              className="input w-full mb-2"
-            />
-
-            <input
-              {...register("Expected_Salary", { required: true })}
-              placeholder="Expected Salary"
-              className="input w-full mb-4"
-            />
-
-            <div className="flex justify-end gap-3">
-              <button type="submit" className="btn btn-primary">
-                Update
-              </button>
-              <button
-                type="button"
-                className="btn"
-                onClick={() =>
-                  document.getElementById("update_modal").close()
-                }
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
         </div>
-      </dialog>
+
+        {/*SINGLE MODAL*/}
+        <dialog id="update_modal" className="modal">
+          <div className="modal-box bg-white text-black rounded-2xl border border-slate-200 shadow-2xl">
+            <form onSubmit={handleSubmit(handleUpdate)}>
+              <h3 className="font-bold text-xl mb-6 text-center text-slate-800">
+                Update Application
+              </h3>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Name
+                  </label>
+                  <input
+                    {...register("Name")}
+                    readOnly
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl bg-slate-100"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Email
+                  </label>
+                  <input
+                    {...register("Email")}
+                    readOnly
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl bg-slate-100"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Qualification
+                  </label>
+                  <input
+                    {...register("Qualification", { required: true })}
+                    placeholder="Enter your qualification"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                  />
+                  {errors.Qualification && (
+                    <p className="text-red-500 text-sm mt-1">Required</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Experience
+                  </label>
+                  <input
+                    {...register("Experience", { required: true })}
+                    placeholder="Enter your experience"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                  />
+                  {errors.Experience && (
+                    <p className="text-red-500 text-sm mt-1">Required</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-2">
+                    Expected Salary
+                  </label>
+                  <input
+                    {...register("Expected_Salary", { required: true })}
+                    placeholder="Enter expected salary"
+                    className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                  />
+                  {errors.Expected_Salary && (
+                    <p className="text-red-500 text-sm mt-1">Required</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 mt-8">
+                <button
+                  type="submit"
+                  className="bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2.5 px-6 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
+                >
+                  Update
+                </button>
+                <button
+                  type="button"
+                  className="bg-slate-200 text-slate-700 font-semibold py-2.5 px-6 rounded-xl hover:bg-slate-300"
+                  onClick={() =>
+                    document.getElementById("update_modal").close()
+                  }
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </dialog>
+      </div>
     </div>
   );
 };

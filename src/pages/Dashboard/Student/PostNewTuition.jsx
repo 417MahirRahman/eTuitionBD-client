@@ -8,7 +8,7 @@ import AuthContext from "../../../providers/AuthContext";
 const PostNewTuition = () => {
   const [formDataToSend, setFormDataToSend] = useState(null);
   const axiosSecure = useAxiosSecure();
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const [role] = useRole();
   console.log("Role", role);
 
@@ -66,72 +66,98 @@ const PostNewTuition = () => {
       Budget: data.budget,
       Location: data.location,
       Status: "Pending",
-      Email: user.email
+      Email: user.email,
     };
     setFormDataToSend(formData);
   };
 
   return (
-    <div>
-      <div className="flex flex-col justify-center items-center min-h-screen">
-        <h1 className="text-center font-bold mb-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-center font-bold mb-8 text-3xl md:text-4xl text-slate-800">
           Post New Tuition
         </h1>
 
-        <form onSubmit={handleSubmit(handleSendPost)}>
-          <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-            <label className="label font-bold">Class</label>
-            <input
-              type="text"
-              className="input w-full"
-              placeholder="Class"
-              {...register("class", { required: "Class is required" })}
-            />
-            {errors.class && (
-              <p className="text-red-500 text-sm">{errors.class.message}</p>
-            )}
+        <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+          <form onSubmit={handleSubmit(handleSendPost)} className="space-y-6">
+            <div>
+              <label className="block text-slate-700 font-medium mb-2">
+                Class
+              </label>
+              <input
+                type="text"
+                className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                placeholder="Enter your class"
+                {...register("class", { required: "Class is required" })}
+              />
+              {errors.class && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.class.message}
+                </p>
+              )}
+            </div>
 
-            <label className="label font-bold">Subject</label>
-            <input
-              type="text"
-              className="input w-full"
-              placeholder="Write subjects name here....."
-              {...register("subject", { required: "Subject is required" })}
-            />
-            {errors.subject && (
-              <p className="text-red-500 text-sm">{errors.subject.message}</p>
-            )}
+            <div>
+              <label className="block text-slate-700 font-medium mb-2">
+                Subject
+              </label>
+              <input
+                type="text"
+                className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                placeholder="Enter subjects"
+                {...register("subject", { required: "Subject is required" })}
+              />
+              {errors.subject && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.subject.message}
+                </p>
+              )}
+            </div>
 
-            <label className="label font-bold">Budget</label>
-            <input
-              type="text"
-              className="input w-full"
-              placeholder="Write amount here....."
-              {...register("budget", { required: "Budget is required" })}
-            />
-            {errors.budget && (
-              <p className="text-red-500 text-sm">{errors.budget.message}</p>
-            )}
+            <div>
+              <label className="block text-slate-700 font-medium mb-2">
+                Budget
+              </label>
+              <input
+                type="text"
+                className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                placeholder="Enter monthly budget amount"
+                {...register("budget", { required: "Budget is required" })}
+              />
+              {errors.budget && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.budget.message}
+                </p>
+              )}
+            </div>
 
-            <label className="label font-bold">Location</label>
-            <input
-              type="text"
-              className="input w-full"
-              placeholder="Write your location here....."
-              {...register("location", { required: "Location is required" })}
-            />
-            {errors.location && (
-              <p className="text-red-500 text-sm">{errors.location.message}</p>
-            )}
+            <div>
+              <label className="block text-slate-700 font-medium mb-2">
+                Location
+              </label>
+              <input
+                type="text"
+                className="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+                placeholder="Enter your location"
+                {...register("location", { required: "Location is required" })}
+              />
+              {errors.location && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.location.message}
+                </p>
+              )}
+            </div>
 
             <button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
-              className="btn bg-[#DC143C] text-white font-bold rounded-xl"
+              className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
             >
-              Submit
+              Post Tuition
             </button>
-          </fieldset>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -14,47 +14,87 @@ const PaymentHistory = () => {
     const loadData = async () => {
       const result = await axiosSecure(`/studentPayment/${user.email}`);
       setData(result.data.result);
-      console.log("data", result.data.result);
       setLoading(false);
     };
     loadData();
   }, [axiosSecure, user]);
 
   if (loading) {
-    return <Loader></Loader>;
+    return <Loader />;
   }
 
   return (
-    <div>
-      <h1 className="text-center font-bold my-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
-        Payment History
-      </h1>
-      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr className="text-center">
-              <th>Serial Number</th>
-              <th>Transaction-ID</th>
-              <th>To</th>
-              <th>Amount</th>
-              <th>Payment Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          {data.map((info, index) => (
-            <tbody key={info._id}>
-              <tr className="text-center">
-                <th>{index + 1}</th>
-                <td>{info.transactionID}</td>
-                <td>{info.tutorEmail}</td>
-                <td>{info.Amount}</td>
-                <td>{info.paymentStatus}</td>
-                <td>{info.paidTime}</td>
-              </tr>
-            </tbody>
-          ))}
-        </table>
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        {data.length === 0 ? (
+          <div className="flex flex-col items-center justify-center min-h-96">
+            <p className="text-3xl md:text-4xl text-slate-600">
+              No Payment History Found
+            </p>
+          </div>
+        ) : (
+          <div>
+            <h1 className="text-center font-bold mb-8 text-3xl md:text-4xl text-slate-800">
+              Payment History
+            </h1>
+
+            <div className="bg-white rounded-box shadow-lg overflow-hidden border border-slate-200">
+              <div className="overflow-x-auto">
+                <table className="table w-full">
+                  <thead className="bg-slate-50">
+                    <tr className="text-center border-b border-slate-200">
+                      <th className="py-4 px-4 text-slate-700 font-semibold">
+                        Serial
+                      </th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">
+                        Transaction ID
+                      </th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">
+                        To
+                      </th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">
+                        Amount
+                      </th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">
+                        Status
+                      </th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">
+                        Date
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((info, index) => (
+                      <tr
+                        key={info._id}
+                        className="text-center hover:bg-slate-50"
+                      >
+                        <td className="py-4 px-4 text-slate-600 font-medium">
+                          {index + 1}
+                        </td>
+                        <td className="py-4 px-4 text-slate-600 font-mono text-sm">
+                          {info.transactionID}
+                        </td>
+                        <td className="py-4 px-4 text-slate-600">
+                          {info.tutorEmail}
+                        </td>
+                        <td className="py-4 px-4 text-green-600 font-semibold">
+                          {info.Amount}
+                        </td>
+                        <td className="py-4 px-4 text-green-600 font-semibold">
+                          {info.paymentStatus}
+                        </td>
+                        <td className="py-4 px-4 text-slate-600">
+                          {info.paidTime}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

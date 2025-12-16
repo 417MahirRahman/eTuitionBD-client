@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
 import AuthContext from "../providers/AuthContext";
 import { toast, Bounce } from "react-toastify";
-import { IoIosLogOut } from "react-icons/io";
 import { Link, NavLink } from "react-router";
-import { MdSpaceDashboard } from "react-icons/md";
-import { IoLogOut } from "react-icons/io5";
-import { BsPersonCircle } from "react-icons/bs";
+import { User, LayoutDashboard, LogOut } from "lucide-react";
+import useRole from "../hooks/useRole";
 
 const Dropdown = () => {
   const { user, logOut } = useContext(AuthContext);
+  const [role] = useRole();
 
   const handleLogOut = () => {
     logOut()
@@ -53,7 +52,7 @@ const Dropdown = () => {
         <ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm">
           <li className="flex gap-1">
             <div>
-              <BsPersonCircle />
+              <User />
               <NavLink to={"/profileSettings"} className="text-black font-bold">
                 Profile
               </NavLink>
@@ -61,16 +60,41 @@ const Dropdown = () => {
           </li>
           <li className="flex gap-1">
             <div>
-              <MdSpaceDashboard />
-              <NavLink to={"/dashboard"} className="text-black font-bold">
-                Dashboard
-              </NavLink>
+              <LayoutDashboard />
+              {/* student */}
+              {role === "student" && (
+                <NavLink
+                  to={"/dashboard/myTuitions"}
+                  className="text-black font-bold"
+                >
+                  Dashboard
+                </NavLink>
+              )}
+
+              {/* Teacher */}
+              {role === "tutor" && (
+                <NavLink
+                  to={"/dashboard/myApplication"}
+                  className="text-black font-bold"
+                >
+                  Dashboard
+                </NavLink>
+              )}
+              
+              {/* Admin */}
+              {role === "admin" && (
+                <NavLink
+                  to={"/dashboard/reportAnalytics"}
+                  className="text-black font-bold"
+                >
+                  Dashboard
+                </NavLink>
+              )}
             </div>
           </li>
           <li className="flex gap-1">
             <div>
-              <IoLogOut />
-              {/* <IoIosLogOut className="text-black font-bold" /> */}
+              <LogOut />
               <Link
                 onClick={handleLogOut}
                 to={"/login"}

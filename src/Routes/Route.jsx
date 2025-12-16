@@ -23,6 +23,7 @@ import AdminRoute from "./AdminRoute";
 import UsersManagement from "../pages/Dashboard/Admin/UsersManagement";
 import TuitionManagement from "../pages/Dashboard/Admin/TuitionManagement";
 import Reports_and_Analytics from "../pages/Dashboard/Admin/Reports_and_Analytics";
+import All_Tutor from "../pages/All_Tutor/All_Tutor";
 
 export const router = createBrowserRouter([
   {
@@ -51,15 +52,21 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/all-tutor",
+        element: <PrivateRoute>
+          <All_Tutor></All_Tutor>
+        </PrivateRoute>
+      },
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/register",
+        Component: Register,
+      },
     ],
-  },
-  {
-    path: "/login",
-    Component: Login,
-  },
-  {
-    path: "/register",
-    Component: Register,
   },
   {
     path: "/dashboard",

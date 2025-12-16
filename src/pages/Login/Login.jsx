@@ -70,7 +70,7 @@ const Login = () => {
         };
 
         axiosSecure.post("/users", userInfo).then((res) => {
-          console.log("User data stored in the database", res.data)
+          console.log("User data stored in the database", res.data);
           navigate(`${location.state ? location.state : "/"}`);
         });
       })
@@ -91,46 +91,60 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center">
-      <h1 className="text-center font-bold text-white mb-5 lg:my-10 text-2xl md:text-3xl lg:text-5xl">
-        Login Now
-      </h1>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 max-w-md w-full">
+        <h1 className="text-center font-bold text-slate-800 mb-8 text-3xl md:text-4xl">
+          Login Now
+        </h1>
 
-      <form onSubmit={handleSubmit(handleLogin)}>
-        <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border-2 shadow-2xl p-4">
-          <label className="label font-bold">Email</label>
-          <input
-            type="email"
-            className="input w-full"
-            placeholder="Email"
-            {...register("email", { required: "Email is required" })}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
-          )}
-
-          <label className="label font-bold">Password</label>
-          <div className="relative">
+        <form onSubmit={handleSubmit(handleLogin)} className="space-y-6">
+          <div>
+            <label className="block text-slate-700 font-medium mb-2">
+              Email
+            </label>
             <input
-              type={showPassword ? "text" : "password"}
-              className="input w-full"
-              placeholder="Password"
-              {...register("password", { required: "Password is required" })}
+              type="email"
+              className="w-full px-4 py-3 border border-slate-300 rounded-xl"
+              placeholder="Enter your email"
+              {...register("email", { required: "Email is required" })}
             />
-            <button
-              onClick={togglePassword}
-              className="absolute top-4 right-3 cursor-pointer"
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
-          {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password.message}</p>
-          )}
+
+          <div>
+            <label className="block text-slate-700 font-medium mb-2">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl"
+                placeholder="Enter your password"
+                {...register("password", { required: "Password is required" })}
+              />
+              <button
+                onClick={togglePassword}
+                className="absolute top-3.5 right-3 cursor-pointer text-slate-500 hover:text-slate-700"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
 
           <button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            className="btn bg-[#DC143C] text-white font-bold rounded-xl"
+            className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
           >
             Login
           </button>
@@ -138,12 +152,12 @@ const Login = () => {
           <button
             onClick={handleGoogleLogin}
             type="button"
-            className="btn bg-white text-black border-[#e5e5e5] rounded-xl font-bold"
+            className="w-full bg-white text-slate-700 border border-slate-300 font-semibold py-3 px-6 rounded-xl hover:bg-slate-50 flex items-center justify-center gap-3 shadow-sm"
           >
             <svg
               aria-label="Google logo"
-              width="16"
-              height="16"
+              width="20"
+              height="20"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 512 512"
             >
@@ -170,14 +184,17 @@ const Login = () => {
             Login with Google
           </button>
 
-          <p className="text-center mt-2 font-bold">
+          <p className="text-center mt-6 text-slate-600">
             Don't have an account?{" "}
-            <Link to={"/register"} className="text-red-700 font-bold">
+            <Link
+              to={"/register"}
+              className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+            >
               Register
             </Link>
           </p>
-        </fieldset>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

@@ -9,11 +9,13 @@ import {
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
 import AuthContext from "./AuthContext";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const axiosSecure = useAxiosSecure();
 
   const createUser = (email, password) => {
     setLoading(true);
@@ -37,28 +39,22 @@ const AuthProvider = ({ children }) => {
     const unSubscribed = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        const user = {email: currentUser.email}
-        fetch("http://localhost:3000/getToken", {
-          method: 'POST',
-          headers: {
-            'content-type':'application/json'
-          },
-          body: JSON.stringify(user)
-        })
-          .then((res) => res.json())
+        const user = { email: currentUser.email };
+        axiosSecure
+          .post("/getToken", user)
           .then((data) => {
-            console.log("After getting Token", data.token);
-            localStorage.setItem('token', data.token)
+            //console.log("Token", data.token);
+            localStorage.setItem("token", data.data.token);
           });
-      }else{
-        localStorage.removeItem('token')
+      } else {
+        localStorage.removeItem("token");
       }
       setLoading(false);
     });
     return () => {
       unSubscribed();
     };
-  }, [auth]);
+  }, [auth, axiosSecure]);
 
   const AuthData = {
     auth,

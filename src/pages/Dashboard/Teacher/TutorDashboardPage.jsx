@@ -1,8 +1,6 @@
 import React from "react";
-import myApplication from "../../../assets/application.png";
-import ongoingTask from "../../../assets/ongoingTask.png";
-import revenue from "../../../assets/revenue.png";
 import { Link } from "react-router";
+import { FileText, Clock, TrendingUp } from "lucide-react";
 
 const TutorDashboardPage = () => {
   return (
@@ -13,7 +11,7 @@ const TutorDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="My Application"
         >
-            <img src={myApplication} alt="" className="w-12" />
+            <FileText className="size-4" />
           <span className="is-drawer-close:hidden">My Application</span>
         </Link>
       </li>
@@ -24,7 +22,7 @@ const TutorDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Ongoing Tuitions"
         >
-            <img src={ongoingTask} alt="" className="w-12"/>
+            <Clock className="size-4" />
           <span className="is-drawer-close:hidden">Ongoing Tuitions</span>
         </Link>
       </li>
@@ -35,7 +33,7 @@ const TutorDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Revenue History"
         >
-          <img src={revenue} alt="" className="w-12"/>
+          <TrendingUp className="size-4" />
           <span className="is-drawer-close:hidden">Revenue History</span>
         </Link>
       </li>

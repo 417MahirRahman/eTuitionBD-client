@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import { BarChart3, Users, BookOpen } from "lucide-react";
 
 const AdminDashboardPage = () => {
   return (
@@ -11,7 +12,7 @@ const AdminDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Report and Analytics"
         >
-          <img src="" alt="" className="w-12" />
+          <BarChart3 className="size-4" />
           <span className="is-drawer-close:hidden">Report and Analytics</span>
         </Link>
       </li>
@@ -23,7 +24,7 @@ const AdminDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Users Management Page"
         >
-          <img src="" alt="" className="w-12" />
+          <Users className="size-4" />
           <span className="is-drawer-close:hidden">Users Management</span>
         </Link>
       </li>
@@ -35,7 +36,7 @@ const AdminDashboardPage = () => {
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Tuition Management Page"
         >
-          <img src="" alt="" className="w-12" />
+          <BookOpen className="size-4" />
           <span className="is-drawer-close:hidden">Tuition Management</span>
         </Link>
       </li>
