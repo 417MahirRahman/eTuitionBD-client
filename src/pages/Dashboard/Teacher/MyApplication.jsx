@@ -24,6 +24,7 @@ const MyApplication = () => {
     setLoading(true);
     axiosSecure(`/tutorApplication/${user.email}`).then((res) => {
       setData(res.data.result);
+      console.log(res.data.result)
       setLoading(false);
     });
   }, [axiosSecure, user.email]);
@@ -96,35 +97,45 @@ const MyApplication = () => {
               <div className="p-6">
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-slate-800 mb-1">
-                    Tutor: {app.Name}
+                    Tuition Information
                   </h3>
                   <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
                 </div>
                 <div className="space-y-3 text-slate-600">
                   <p className="flex items-start">
                     <span className="font-semibold text-slate-700 mr-2">
-                      Email:
+                      Class:
                     </span>
-                    {app.Email}
+                    {app.Class}
                   </p>
                   <p className="flex items-start">
                     <span className="font-semibold text-slate-700 mr-2">
-                      Qualification:
+                      Subjects:
                     </span>
-                    {app.Qualification}
+                    {app.Subjects}
                   </p>
                   <p className="flex items-start">
                     <span className="font-semibold text-slate-700 mr-2">
-                      Experience:
+                      Budget:
                     </span>
-                    {app.Experience}
+                    <span className="text-green-600 font-medium">
+                      {app.Budget}
+                    </span>
                   </p>
                   <p className="flex items-start">
                     <span className="font-semibold text-slate-700 mr-2">
-                      Expected Salary:
+                      Your Expected Salary:
                     </span>
                     <span className="text-green-600 font-medium">
                       {app.Expected_Salary}
+                    </span>
+                  </p>
+                  <p className="flex items-start">
+                    <span className="font-semibold text-slate-700 mr-2">
+                      Location:
+                    </span>
+                    <span>
+                      {app.Location}
                     </span>
                   </p>
                 </div>

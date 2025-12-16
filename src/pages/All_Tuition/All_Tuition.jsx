@@ -13,14 +13,19 @@ const All_Tuition = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [order, setOrder] = useState("-1");
   const [searchValue, setSearchValue] = useState("");
-  const limit = 3;
+  const [filters, setFilters] = useState({
+    clas: "",
+    subject: "",
+    location: "",
+  });
+  const limit = 6;
 
   useEffect(() => {
     const loadData = async () => {
       const result = await axiosSecure(
         `/allTuitions?limit=${limit}&skip=${
           currentPage * limit
-        }&order=${order}&search=${searchValue}`
+        }&order=${order}&search=${searchValue}&filter=${filters}`
       );
       setData(result.data.result);
       setTotalData(result.data.total);
@@ -28,7 +33,7 @@ const All_Tuition = () => {
       setTotalPage(page);
     };
     loadData();
-  }, [user, axiosSecure, currentPage, order, searchValue]);
+  }, [user, axiosSecure, currentPage, order, searchValue, filters]);
 
   if (loading) {
     return <Loader />;
@@ -42,6 +47,14 @@ const All_Tuition = () => {
   //Search Function
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
+  };
+
+  //Filter Function
+  const handleFilterChange = (e) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
@@ -81,19 +94,60 @@ const All_Tuition = () => {
                   placeholder="Search by Class or Location"
                 />
               </div>
-              <p className="text-xs text-slate-500 text-center lg:text-left">
-                NB: For Class, write only "7" not "Class-7"
-              </p>
+            </div>
+
+            {/* Filter */}
+            <div className="flex flex-col justify-center items-center sm:flex-row gap-4">
+              <h1>Filter:</h1>
+              {/* Class */}
+              <select
+                name="className"
+                onChange={handleFilterChange}
+                className="px-4 py-2.5 border border-slate-300 rounded-xl bg-white"
+              >
+                <option value="">Select Class</option>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((c) => (
+                  <option key={c} value={c}>
+                    Class {c}
+                  </option>
+                ))}
+              </select>
+
+              {/* Subject */}
+              <select
+                name="subject"
+                onChange={handleFilterChange}
+                className="px-4 py-2.5 border border-slate-300 rounded-xl bg-white"
+              >
+                <option value="">Select Subject</option>
+                <option value="Math">Mathematics</option>
+                <option value="English">English</option>
+                <option value="Bangla">Bangla</option>
+                <option value="Science">Science</option>
+              </select>
+
+              {/* Location */}
+              <select
+                name="location"
+                onChange={handleFilterChange}
+                className="px-4 py-2.5 border border-slate-300 rounded-xl bg-white"
+              >
+                <option value="">Select Location</option>
+                <option value="Dhaka">Dhaka</option>
+                <option value="Chittagong">Chittagong</option>
+                <option value="Rajshahi">Rajshahi</option>
+              </select>
             </div>
 
             {/* Sort */}
             <div className="flex flex-col gap-2">
-              <label className="text-slate-700 font-medium">Sort by:</label>
               <select
                 onChange={handleSorting}
                 className="border border-slate-300 rounded-xl px-4 py-2.5 bg-white"
               >
-                <option selected disabled={true}>Choose option</option>
+                <option selected disabled={true}>
+                  Sort By:
+                </option>
                 <option value="-1">Budget: High - Low</option>
                 <option value="1">Budget: Low - High</option>
                 <option value="">Latest Tuition</option>

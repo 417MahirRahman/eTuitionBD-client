@@ -30,7 +30,7 @@ const TuitionDetails = () => {
       setLoading(true);
       const res = await axiosSecure(`allTuitions/${id}`);
       setData(res.data.result);
-      //console.log("Data:",res.data.result)
+      console.log("Data:",res.data.result)
       setLoading(false);
     };
     loadTuitionDetails();
@@ -78,6 +78,10 @@ const TuitionDetails = () => {
       ...Data,
       tuitionId: data._id,
       studentEmail: data.Email,
+      Budget: data.Budget,
+      Class: data.Class,
+      Location: data.Location,
+      Subjects: data.Subjects,
       Name: Data.Name,
       Email: Data.Email,
       Qualification: Data.Qualification,
