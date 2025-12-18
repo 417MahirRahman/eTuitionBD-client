@@ -15,6 +15,7 @@ const All_Tuition = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [sort, setSort] = useState("budget_desc");
   const [searchValue, setSearchValue] = useState("");
+  const [search, setSearch] = useState(searchValue)
   const [filters, setFilters] = useState({
     grade: "",
     subject: "",
@@ -22,13 +23,20 @@ const All_Tuition = () => {
   });
   const limit = 6;
 
+  useEffect(() =>{
+    const timer = setTimeout(()=>{
+      setSearch(searchValue)
+    },1000)
+    return (()=>{clearTimeout(timer)})
+  }, [searchValue])
+
   useEffect(() => {
-    setLoading(true)
     const loadData = async () => {
+      setLoading(true)
       const result = await axiosSecure(
         `/allTuitions?limit=${limit}&skip=${
           currentPage * limit
-        }&sort=${sort}&search=${searchValue}&grade=${filters.grade}&subject=${
+        }&sort=${sort}&search=${search}&grade=${filters.grade}&subject=${
           filters.subject
         }&location=${filters.location}`
       );
@@ -39,7 +47,7 @@ const All_Tuition = () => {
       setLoading(false)
     };
     loadData();
-  }, [user, axiosSecure, currentPage, sort, searchValue, filters]);
+  }, [user, axiosSecure, currentPage, sort, search, filters]);
 
   if (loading) {
     return <Loader />;
@@ -96,6 +104,7 @@ const All_Tuition = () => {
                   </div>
                   <input
                     onChange={handleSearch}
+                    value={searchValue}
                     type="search"
                     className="w-full lg:w-80 pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl"
                     placeholder="Search by Class or Location"
@@ -116,6 +125,7 @@ const All_Tuition = () => {
                   <select
                     name="grade"
                     onChange={handleFilterChange}
+                    value={filters.grade}
                     className="px-4 py-2.5 border border-slate-300 rounded-xl"
                   >
                     <option value="">Class</option>
@@ -136,20 +146,29 @@ const All_Tuition = () => {
                   <select
                     name="subject"
                     onChange={handleFilterChange}
+                    value={filters.subject}
                     className="px-4 py-2.5 border border-slate-300 rounded-xl"
                   >
                     <option value="">Subject</option>
-                    <option value="Math">Mathematics</option>
-                    <option value="English">English</option>
                     <option value="Bangla">Bangla</option>
+                    <option value="English">English</option>
+                    <option value="Math">Math</option>
+                    <option value="Math">Higher-Math</option>
                     <option value="Science">Science</option>
                     <option value="Chemistry">Chemistry</option>
                     <option value="Physics">Physics</option>
+                    <option value="Physics">Biology</option>
+                    <option value="Physics">Accounting</option>
+                    <option value="Physics">Economics</option>
+                    <option value="Physics">Finance</option>
+                    <option value="Physics">Statistics</option>
+                    <option value="Physics">ICT</option>
                   </select>
 
                   <select
                     name="location"
                     onChange={handleFilterChange}
+                    value={filters.location} 
                     className="px-4 py-2.5 border border-slate-300 rounded-xl"
                   >
                     <option value="">Location</option>
@@ -173,9 +192,10 @@ const All_Tuition = () => {
                 <div className="gap-2">
                   <select
                     onChange={handleSorting}
+                    value={sort}
                     className="px-4 py-2.5 border border-slate-300 rounded-xl w-full"
                   >
-                    <option value="">Sort By</option>
+                    <option selected disabled={true}>Sort By</option>
                     <option value="budget_desc">Budget: High - Low</option>
                     <option value="budget_asc">Budget: Low - High</option>
                     <option value="date_desc">Latest Tuition</option>
