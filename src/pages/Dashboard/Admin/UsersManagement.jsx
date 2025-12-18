@@ -86,193 +86,229 @@ const UsersManagement = () => {
           </h1>
         )}
 
-        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">Admin:</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-20"> 
-          {data.map((userData) => userData.role === "admin" && (
-            <div
-              key={userData._id}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
-            >
-              <div className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-slate-800 mb-1">
-                    User: {userData.name}
-                  </h3>
-                  <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">
+          Admin:
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-20">
+          {data.map(
+            (userData) =>
+              userData.role === "admin" && (
+                <div
+                  key={userData._id}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
+                >
+                  <div className="p-6">
+                    <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
+                      <img
+                        className="rounded-full"
+                        src={userData.Image_URL}
+                        alt=""
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-slate-800 mb-1">
+                        User: {userData.name}
+                      </h3>
+                      <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+                    </div>
+                    <div className="space-y-3 text-slate-600">
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Email:
+                        </span>
+                        {userData.email}
+                      </p>
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Role:
+                        </span>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            userData.role === "admin"
+                              ? "bg-purple-100 text-purple-700"
+                              : userData.role === "tutor"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-blue-100 text-blue-700"
+                          }`}
+                        >
+                          {userData.role}
+                        </span>
+                      </p>
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Phone:
+                        </span>
+                        {userData.phoneNumber}
+                      </p>
+                    </div>
+                    <div className="flex gap-3 mt-6">
+                      <button
+                        onClick={() => openModal(userData)}
+                        className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => handleDelete(userData._id)}
+                        className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-3 text-slate-600">
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Email:
-                    </span>
-                    {userData.email}
-                  </p>
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Role:
-                    </span>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        userData.role === "admin"
-                          ? "bg-purple-100 text-purple-700"
-                          : userData.role === "tutor"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}
-                    >
-                      {userData.role}
-                    </span>
-                  </p>
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Phone:
-                    </span>
-                    {userData.phoneNumber}
-                  </p>
-                </div>
-                <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={() => openModal(userData)}
-                    className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDelete(userData._id)}
-                    className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+              )
+          )}
         </div>
 
-        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">Tutor:</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-20"> 
-          {data.map((userData) => userData.role === "tutor" && (
-            <div
-              key={userData._id}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
-            >
-              <div className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-slate-800 mb-1">
-                    User: {userData.name}
-                  </h3>
-                  <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">
+          Tutor:
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-20">
+          {data.map(
+            (userData) =>
+              userData.role === "tutor" && (
+                <div
+                  key={userData._id}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
+                >
+                  <div className="p-6">
+                    <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
+                      <img
+                        className="rounded-full"
+                        src={userData.Image_URL}
+                        alt=""
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-slate-800 mb-1">
+                        User: {userData.name}
+                      </h3>
+                      <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+                    </div>
+                    <div className="space-y-3 text-slate-600">
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Email:
+                        </span>
+                        {userData.email}
+                      </p>
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Role:
+                        </span>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            userData.role === "admin"
+                              ? "bg-purple-100 text-purple-700"
+                              : userData.role === "tutor"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-blue-100 text-blue-700"
+                          }`}
+                        >
+                          {userData.role}
+                        </span>
+                      </p>
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Phone:
+                        </span>
+                        {userData.phoneNumber}
+                      </p>
+                    </div>
+                    <div className="flex gap-3 mt-6">
+                      <button
+                        onClick={() => openModal(userData)}
+                        className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => handleDelete(userData._id)}
+                        className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-3 text-slate-600">
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Email:
-                    </span>
-                    {userData.email}
-                  </p>
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Role:
-                    </span>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        userData.role === "admin"
-                          ? "bg-purple-100 text-purple-700"
-                          : userData.role === "tutor"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}
-                    >
-                      {userData.role}
-                    </span>
-                  </p>
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Phone:
-                    </span>
-                    {userData.phoneNumber}
-                  </p>
-                </div>
-                <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={() => openModal(userData)}
-                    className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDelete(userData._id)}
-                    className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+              )
+          )}
         </div>
 
-        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">Student:</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"> 
-          {data.map((userData) => userData.role === "student" && (
-            <div
-              key={userData._id}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
-            >
-              <div className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-slate-800 mb-1">
-                    User: {userData.name}
-                  </h3>
-                  <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">
+          Student:
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {data.map(
+            (userData) =>
+              userData.role === "student" && (
+                <div
+                  key={userData._id}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
+                >
+                  <div className="p-6">
+                    <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
+                      <img
+                        className="rounded-full"
+                        src={userData.Image_URL}
+                        alt=""
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-slate-800 mb-1">
+                        User: {userData.name}
+                      </h3>
+                      <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+                    </div>
+                    <div className="space-y-3 text-slate-600">
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Email:
+                        </span>
+                        {userData.email}
+                      </p>
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Role:
+                        </span>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            userData.role === "admin"
+                              ? "bg-purple-100 text-purple-700"
+                              : userData.role === "tutor"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-blue-100 text-blue-700"
+                          }`}
+                        >
+                          {userData.role}
+                        </span>
+                      </p>
+                      <p className="flex items-start">
+                        <span className="font-semibold text-slate-700 mr-2">
+                          Phone:
+                        </span>
+                        {userData.phoneNumber}
+                      </p>
+                    </div>
+                    <div className="flex gap-3 mt-6">
+                      <button
+                        onClick={() => openModal(userData)}
+                        className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => handleDelete(userData._id)}
+                        className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-3 text-slate-600">
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Email:
-                    </span>
-                    {userData.email}
-                  </p>
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Role:
-                    </span>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        userData.role === "admin"
-                          ? "bg-purple-100 text-purple-700"
-                          : userData.role === "tutor"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}
-                    >
-                      {userData.role}
-                    </span>
-                  </p>
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
-                      Phone:
-                    </span>
-                    {userData.phoneNumber}
-                  </p>
-                </div>
-                <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={() => openModal(userData)}
-                    className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDelete(userData._id)}
-                    className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+              )
+          )}
         </div>
 
         {/*SINGLE MODAL*/}
