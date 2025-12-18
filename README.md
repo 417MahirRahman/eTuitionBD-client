@@ -53,9 +53,35 @@ It allows students to post tuition requests, tutors to apply for tuitions, and a
 ### Authentication
 - **Firebase Authentication**
   - Email/Password Login
-  - Role-based Access Control
 
 ---
 
+## Project Structure
+```bash
+client/
+├── src/
+│   ├── layout          # Main-layout, Dashboard-layout
+│   ├── firebase        # Authentication
+│   ├── pages/          # Home, All-Tuition, Tuition-Details, Tutor, Profile, Dashboard etc.
+│   ├── components/     # Navbar, Footer
+│   ├── hooks/          # useAxiosSecure etc
+│   ├── Provider/       # AuthProvider & AuthContext
+│   └── utilities/      # Loader, Dropdown, Validity
+server/
+├── index.js            # Express server
+```
 
+---
+
+## Clone the repository:
+```bash
+git clone https://github.com/417MahirRahman/eTuitionBD-client.git
+
+```
+---
+
+## Install dependencies and start the development server:
+```bash
+npm install
+npm run dev
 
