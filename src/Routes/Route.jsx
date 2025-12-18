@@ -18,17 +18,22 @@ import MyTuitions from "../pages/Dashboard/Student/MyTuitions";
 import AppliedTutors from "../pages/Dashboard/Student/AppliedTutors";
 import PaymentSuccess from "../pages/Dashboard/Student/PaymentSuccess";
 import PaymentHistory from "../pages/Dashboard/Student/PaymentHistory";
-import MyProfile from "../pages/Dashboard/Student/MyProfile";
+import MyProfile from "../pages/My Profile/MyProfile";
 import AdminRoute from "./AdminRoute";
 import UsersManagement from "../pages/Dashboard/Admin/UsersManagement";
 import TuitionManagement from "../pages/Dashboard/Admin/TuitionManagement";
 import Reports_and_Analytics from "../pages/Dashboard/Admin/Reports_and_Analytics";
 import All_Tutor from "../pages/All_Tutor/All_Tutor";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import TuitionPostNotFound from "../pages/ErrorPage/TuitionPostNotFound";
+import Contact from "../pages/Contact Page/Contact";
+import AboutUs from "../pages/About Us/AboutUs";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -37,6 +42,7 @@ export const router = createBrowserRouter([
       {
         path: "/all-tuition",
         Component: Tuition,
+        
         children: [
           {
             index: true,
@@ -59,6 +65,22 @@ export const router = createBrowserRouter([
         </PrivateRoute>
       },
       {
+        path: "/profileSettings",
+        element: (
+          <PrivateRoute>
+            <MyProfile></MyProfile>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/contact",
+        Component: Contact,
+      },
+      {
+        path: "/aboutUs",
+        Component: AboutUs,
+      },
+      {
         path: "/login",
         Component: Login,
       },
@@ -66,6 +88,10 @@ export const router = createBrowserRouter([
         path: "/register",
         Component: Register,
       },
+      {
+        path:"/tuitionPostNotFound",
+        Component: TuitionPostNotFound,
+      }
     ],
   },
   {
@@ -141,14 +167,6 @@ export const router = createBrowserRouter([
         element: (
           <StudentRoute>
             <PaymentSuccess></PaymentSuccess>
-          </StudentRoute>
-        ),
-      },
-      {
-        path: "/dashboard/profileSettings",
-        element: (
-          <StudentRoute>
-            <MyProfile></MyProfile>
           </StudentRoute>
         ),
       },

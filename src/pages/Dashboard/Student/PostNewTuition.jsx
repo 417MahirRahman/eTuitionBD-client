@@ -67,6 +67,7 @@ const PostNewTuition = () => {
       Location: data.location,
       Status: "Pending",
       Email: user.email,
+      Date: new Date(),
     };
     setFormDataToSend(formData);
   };

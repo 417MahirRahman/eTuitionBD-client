@@ -56,7 +56,7 @@ const StudentDashboardPage = () => {
       {/* Profile Settings */}
       <li>
         <Link
-          to={"/dashboard/profileSettings"}
+          to={"/profileSettings"}
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Profile Settings"
         >

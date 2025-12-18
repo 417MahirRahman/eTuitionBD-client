@@ -42,7 +42,7 @@ const PaymentSuccess = () => {
           </Link>
 
           <Link
-            to="/"
+            to={"/"}
             className="block text-slate-700 hover:text-slate-900 font-medium"
           >
             Back to Home

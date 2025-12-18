@@ -28,9 +28,14 @@ const TuitionDetails = () => {
   useEffect(() => {
     const loadTuitionDetails = async () => {
       setLoading(true);
+      if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+        navigate("/tuitionPostNotFound");
+        return;
+      }
       const res = await axiosSecure(`allTuitions/${id}`);
+
       setData(res.data.result);
-      console.log("Data:",res.data.result)
+      console.log("Data:", res.data.result);
       setLoading(false);
     };
     loadTuitionDetails();
@@ -88,6 +93,7 @@ const TuitionDetails = () => {
       Experience: Data.Experience,
       Expected_Salary: Data.Expected_Salary,
       Status: "Pending",
+      Date: new Date(),
     };
     addTuitionMutation.mutate(formData);
   };
@@ -99,7 +105,13 @@ const TuitionDetails = () => {
           TUITION DETAILS
         </h1>
 
-        <div className={role === "tutor" ? "grid grid-cols-1 lg:grid-cols-2 gap-8" : "grid grid-cols-1"}>
+        <div
+          className={
+            role === "tutor"
+              ? "grid grid-cols-1 lg:grid-cols-2 gap-8"
+              : "grid grid-cols-1"
+          }
+        >
           {/* Tuition Details Section */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
             <div className="flex items-center justify-between mb-6">

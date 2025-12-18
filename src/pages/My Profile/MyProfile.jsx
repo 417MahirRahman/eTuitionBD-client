@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import AuthContext from "../../../providers/AuthContext";
+import AuthContext from "../../providers/AuthContext";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import Loader from "../../../utilities/Loader";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Loader from "../../utilities/Loader";
 
 const MyProfile = () => {
   const { user } = useContext(AuthContext);
@@ -56,7 +56,7 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen mt-20">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-center font-bold mb-8 text-3xl md:text-4xl text-slate-800">
           My Profile

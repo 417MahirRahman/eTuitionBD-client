@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loader from "../../utilities/Loader";
-import { Link } from "react-router";
+import { motion } from "motion/react";
 
 const All_Tutor = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const role = "tutor" 
+  const role = "tutor";
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
@@ -30,8 +30,11 @@ const All_Tutor = () => {
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {data.map((tutor) => (
-            <div
+            <motion.div
               key={tutor._id}
+              whileHover={{ y: -10, x: 5, scale: 1.05, zIndex: 10 }}
+              whileTap={{ scale: 0.8 }}
+              transition={{ type: "spring", stiffness: 300 }}
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
             >
               <div className="p-6">
@@ -61,7 +64,7 @@ const All_Tutor = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

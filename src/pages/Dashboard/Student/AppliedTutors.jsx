@@ -107,6 +107,7 @@ const AppliedTutors = () => {
                         onClick={() => {
                           const paymentInfo = {
                             studentID: tuition.tuitionId,
+                            studentClass: tuition.Class,
                             studentEmail: user.email,
                             tutorID: tuition._id,
                             tutorEmail: tuition.Email,

@@ -13,6 +13,7 @@ const Reports_and_Analytics = () => {
     const loadData = async () => {
       const result = await axiosSecure("/allPaymentInfo");
       setData(result.data);
+      console.log("Data:",result.data)
       setLoading(false);
     };
     loadData();

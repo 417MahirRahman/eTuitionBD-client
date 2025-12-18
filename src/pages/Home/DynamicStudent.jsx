@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Loader from "../../utilities/Loader";
 import { Link } from "react-router";
+import { motion } from "motion/react";
 
 const DynamicStudent = () => {
   const [data, setData] = useState([]);
@@ -23,7 +24,7 @@ const DynamicStudent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4">
+    <div className="bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4 my-30">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-center font-bold my-8 lg:my-12 text-3xl md:text-4xl lg:text-5xl text-slate-800">
           New Tuition Post
@@ -32,8 +33,11 @@ const DynamicStudent = () => {
           {data.map(
             (tuition) =>
               tuition.Status === "Approved" && (
-                <div
+                <motion.div
                   key={tuition._id}
+                  whileHover={{ y: -10, x: 5, scale: 1.05, zIndex: 10 }}
+                  whileTap={{ scale: 0.8 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                   className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
                 >
                   <div className="p-6">
@@ -74,17 +78,19 @@ const DynamicStudent = () => {
                       </Link>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               )
           )}
         </div>
       </div>
-      <Link
-        className="w-1/10 mx-auto my-15 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2.5 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg block text-center"
-        to={"/all-tuition"}
-      >
-        View All Tuition
-      </Link>
+      <div className="text-center mt-8">
+        <Link
+          className="btn btn-lg bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2.5 px-6 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg text-center"
+          to={"/all-tuition"}
+        >
+          View All Tuition
+        </Link>
+      </div>
     </div>
   );
 };
