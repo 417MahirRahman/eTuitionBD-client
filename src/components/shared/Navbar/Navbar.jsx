@@ -73,21 +73,21 @@ const Navbar = () => {
               {links}
             </ul>
           </div>
-          <div className="flex items-center justify-center ml-10">
-            <img className="size-25" src={logo} alt="" />
+          <div className="flex items-center justify-center ml-3 md:ml-0 xl:ml-10">
+            <img className="size-16 lg:size-25" src={logo} alt="" />
             <Link
               to={"/"}
-              className="text-3xl -ml-2 font-bold text-slate-800 hover:cursor-pointer"
+              className="text-2xl lg:text-3xl -ml-2 font-bold text-slate-800 hover:cursor-pointer"
             >
               <span>eTui</span>
               <span className="text-blue-600">tionBD</span>
             </Link>
           </div>
         </div>
-        <div className="navbar-center hidden lg:flex">
+        <div className="navbar-center hidden lg:flex lg:ml-10">
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end lg:mr-10">
           {user ? (
             <div>
               <Dropdown />
@@ -95,7 +95,7 @@ const Navbar = () => {
           ) : (
             <Link
               to={"/login"}
-              className="btn btn-lg bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-full border-none hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="btn btn-lg bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-full border-none hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl"
             >
               Login
             </Link>

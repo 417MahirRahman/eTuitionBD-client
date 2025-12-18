@@ -70,8 +70,12 @@ const DynamicTutor = () => {
             <SwiperSlide key={tutor._id}>
               <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200 h-full">
                 <div className="p-6">
-                  <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mb-4">
-                    <span className="text-slate-500 text-xl">👤</span>
+                  <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
+                    <img
+                      className="rounded-full"
+                      src={tutor.Image_URL}
+                      alt=""
+                    />
                   </div>
                   <div className="mb-4">
                     <h3 className="text-xl font-bold text-slate-800 mb-1">

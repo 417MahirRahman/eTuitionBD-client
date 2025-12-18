@@ -14,6 +14,7 @@ const TuitionDetails = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+  const [userData, setUserData] = useState([])
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const [role] = useRole();
@@ -26,6 +27,7 @@ const TuitionDetails = () => {
   } = useForm();
 
   useEffect(() => {
+    setLoading(true)
     const loadTuitionDetails = async () => {
       setLoading(true);
       if (!/^[0-9a-fA-F]{24}$/.test(id)) {
@@ -33,13 +35,15 @@ const TuitionDetails = () => {
         return;
       }
       const res = await axiosSecure(`allTuitions/${id}`);
-
+      const res2 = await axiosSecure(`/users/${user.email}`)
       setData(res.data.result);
-      console.log("Data:", res.data.result);
+      setUserData(res2.data.result)
+      //console.log("Data:", res.data.result);
+      //console.log("Data2:", res2.data.result);
       setLoading(false);
     };
     loadTuitionDetails();
-  }, [id, navigate, axiosSecure]);
+  }, [id, navigate, axiosSecure, user]);
 
   const addTuitionMutation = useMutation({
     mutationFn: async (formData) => {
@@ -92,6 +96,8 @@ const TuitionDetails = () => {
       Qualification: Data.Qualification,
       Experience: Data.Experience,
       Expected_Salary: Data.Expected_Salary,
+      tutorImage: userData.Image_URL,
+      tutorPhoneNumber: userData.phoneNumber,
       Status: "Pending",
       Date: new Date(),
     };

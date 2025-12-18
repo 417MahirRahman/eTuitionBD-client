@@ -52,24 +52,24 @@ const OngoingTuition = () => {
               >
                 <div className="p-6">
                   <div className="mb-4">
-                    <h3 className="text-xl font-bold text-slate-800 mb-1">Tutor: {tutor.Name}</h3>
+                    <h3 className="text-xl font-bold text-slate-800 mb-1">Tuition Information</h3>
                     <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
                   </div>
                   <div className="space-y-3 text-slate-600">
                     <p className="flex items-start">
-                      <span className="font-semibold text-slate-700 mr-2">Email:</span>
-                      {tutor.Email}
+                      <span className="font-semibold text-slate-700 mr-2">Class:</span>
+                      {tutor.Class}
                     </p>
                     <p className="flex items-start">
-                      <span className="font-semibold text-slate-700 mr-2">Qualification:</span>
-                      {tutor.Qualification}
+                      <span className="font-semibold text-slate-700 mr-2">Subjects:</span>
+                      {tutor.Subjects}
                     </p>
                     <p className="flex items-start">
-                      <span className="font-semibold text-slate-700 mr-2">Experience:</span>
-                      {tutor.Experience}
+                      <span className="font-semibold text-slate-700 mr-2">Location:</span>
+                      {tutor.Location}
                     </p>
                     <p className="flex items-start">
-                      <span className="font-semibold text-slate-700 mr-2">Expected Salary:</span>
+                      <span className="font-semibold text-slate-700 mr-2">Salary:</span>
                       <span className="text-green-600 font-medium">{tutor.Expected_Salary}</span>
                     </p>
                   </div>

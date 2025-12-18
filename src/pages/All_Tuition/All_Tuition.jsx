@@ -6,9 +6,10 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { motion } from "motion/react";
 
 const All_Tuition = () => {
-  const { user, loading } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false)
   const [totalData, setTotalData] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
@@ -22,6 +23,7 @@ const All_Tuition = () => {
   const limit = 6;
 
   useEffect(() => {
+    setLoading(true)
     const loadData = async () => {
       const result = await axiosSecure(
         `/allTuitions?limit=${limit}&skip=${
@@ -34,6 +36,7 @@ const All_Tuition = () => {
       setTotalData(result.data.total);
       const page = Math.ceil(result.data.total / limit);
       setTotalPage(page);
+      setLoading(false)
     };
     loadData();
   }, [user, axiosSecure, currentPage, sort, searchValue, filters]);
@@ -61,7 +64,7 @@ const All_Tuition = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4 mb-30">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-center font-bold my-8 lg:my-12 text-3xl md:text-4xl lg:text-5xl text-slate-800">
           ALL TUITIONS
@@ -103,6 +106,7 @@ const All_Tuition = () => {
 
             {/* Filter and Sort Section */}
             <div className="gird grid-cols-1 space-y-2 sm:flex-row gap-4 w-full lg:w-auto">
+
               {/* Filter */}
               <div className="flex flex-col lg:flex-row xl:justify-center xl:items-center gap-3">
                 <h1 className="text-slate-700 font-semibold text-lg">
@@ -169,7 +173,7 @@ const All_Tuition = () => {
                 <div className="gap-2">
                   <select
                     onChange={handleSorting}
-                    className="px-4 py-2.5 border border-slate-300 rounded-xl"
+                    className="px-4 py-2.5 border border-slate-300 rounded-xl w-full"
                   >
                     <option value="">Sort By</option>
                     <option value="budget_desc">Budget: High - Low</option>

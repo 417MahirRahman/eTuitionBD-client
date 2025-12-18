@@ -1,13 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../providers/AuthContext";
 import { toast, Bounce } from "react-toastify";
 import { Link, NavLink } from "react-router";
 import { User, LayoutDashboard, LogOut } from "lucide-react";
 import useRole from "../hooks/useRole";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const Dropdown = () => {
   const { user, logOut } = useContext(AuthContext);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const axiosSecure = useAxiosSecure();
   const [role] = useRole();
+
+  useEffect(() => {
+      const loadData = async () => {
+        const result = await axiosSecure(`/users/${user.email}`);
+        setData(result.data.result);
+        console.log("data:", result.data.result);
+        setLoading(false);
+      };
+      loadData();
+    }, [axiosSecure, user]);
+  
+    if (loading) {
+      return <Loader></Loader>;
+    }
 
   const handleLogOut = () => {
     logOut()
@@ -45,7 +63,7 @@ const Dropdown = () => {
         <summary className="border w-10 avatar rounded-full m-1">
           <img
             className="rounded-full avatar"
-            src={user.photoURL ? user.photoURL : "ProfilePic"}
+            src={data.Image_URL}
             alt=""
           />
         </summary>

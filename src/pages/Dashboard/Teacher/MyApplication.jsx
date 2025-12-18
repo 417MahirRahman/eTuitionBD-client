@@ -24,7 +24,7 @@ const MyApplication = () => {
     setLoading(true);
     axiosSecure(`/tutorApplication/${user.email}`).then((res) => {
       setData(res.data.result);
-      console.log(res.data.result)
+      console.log(res.data.result);
       setLoading(false);
     });
   }, [axiosSecure, user.email]);
@@ -78,7 +78,7 @@ const MyApplication = () => {
       <div className="max-w-7xl mx-auto">
         {pendingApplications.length === 0 ? (
           <div className="flex justify-center items-center min-h-96">
-            <p className="text-3xl md:text-4xl text-slate-600">
+            <p className="text-3xl text-center md:text-4xl text-slate-600">
               No Pending Applications Found
             </p>
           </div>
@@ -124,20 +124,45 @@ const MyApplication = () => {
                   </p>
                   <p className="flex items-start">
                     <span className="font-semibold text-slate-700 mr-2">
-                      Your Expected Salary:
-                    </span>
-                    <span className="text-green-600 font-medium">
-                      {app.Expected_Salary}
-                    </span>
-                  </p>
-                  <p className="flex items-start">
-                    <span className="font-semibold text-slate-700 mr-2">
                       Location:
                     </span>
-                    <span>
-                      {app.Location}
-                    </span>
+                    <span>{app.Location}</span>
                   </p>
+                  {/* Tutor Info */}
+                  <div className="mt-4">
+                    <h3 className="text-xl font-bold text-slate-800 mb-1">
+                      Information you have given
+                    </h3>
+                    <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+                  </div>
+                  <div className="space-y-3 text-slate-600">
+                    <p className="flex items-start">
+                      <span className="font-semibold text-slate-700 mr-2">
+                        Name:
+                      </span>
+                      <span>{app.Name}</span>
+                    </p>
+                    <p className="flex items-start">
+                      <span className="font-semibold text-slate-700 mr-2">
+                        Qualification:
+                      </span>
+                      <span>{app.Qualification}</span>
+                    </p>
+                    <p className="flex items-start">
+                      <span className="font-semibold text-slate-700 mr-2">
+                        Experience:
+                      </span>
+                      <span>{app.Experience}</span>
+                    </p>
+                    <p className="flex items-start">
+                      <span className="font-semibold text-slate-700 mr-2">
+                        Your Expected Salary:
+                      </span>
+                      <span className="text-green-600 font-medium">
+                        {app.Expected_Salary}
+                      </span>
+                    </p>
+                  </div>
                 </div>
                 <div className="flex gap-3 mt-6">
                   <button

@@ -71,6 +71,9 @@ const AppliedTutors = () => {
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
             >
               <div className="p-6">
+                <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
+                  <img className="rounded-full" src={tuition.tutorImage} alt="" />
+                </div>
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-slate-800 mb-1">
                     Tutor: {tuition.Name}
@@ -120,8 +123,7 @@ const AppliedTutors = () => {
                         Approve
                       </button>
                       <button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        
                         onClick={() => {
                           handleRejectBtn(tuition._id);
                         }}
@@ -133,8 +135,7 @@ const AppliedTutors = () => {
                   )}
                   {tuition.Status === "Rejected" && (
                     <button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      
                       className="w-full bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl"
                       disabled
                     >
@@ -143,8 +144,7 @@ const AppliedTutors = () => {
                   )}
                   {tuition.Status === "Approved" && (
                     <button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      
                       className="w-full bg-linear-to-r from-green-500 to-green-600 text-white font-semibold py-2 px-4 rounded-xl"
                       disabled
                     >

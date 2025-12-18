@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Loader from "../../../utilities/Loader";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const Reports_and_Analytics = () => {
   const axiosSecure = useAxiosSecure();
@@ -13,7 +23,7 @@ const Reports_and_Analytics = () => {
     const loadData = async () => {
       const result = await axiosSecure("/allPaymentInfo");
       setData(result.data);
-      console.log("Data:",result.data)
+      console.log("Data:", result.data);
       setLoading(false);
     };
     loadData();
@@ -27,6 +37,21 @@ const Reports_and_Analytics = () => {
   if (loading) {
     return <Loader />;
   }
+
+  //Chart Data
+  const chartData = Array.from({ length: 12 }, (_, i) => ({
+    name: `Class:${i + 1}`,
+    revenue: 0,
+  }));
+
+  data.forEach((item) => {
+    const index = Number(item.studentClass) - 1;
+    if (index >= 0 && index < chartData.length) {
+      chartData[index].revenue += Number(item.Amount);
+    }
+  });
+
+  console.log("chart:", chartData);
 
   return (
     <div className="min-h-screen">
@@ -59,6 +84,9 @@ const Reports_and_Analytics = () => {
                         Transaction ID
                       </th>
                       <th className="py-4 px-4 text-slate-700 font-semibold">
+                        Class
+                      </th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">
                         From
                       </th>
                       <th className="py-4 px-4 text-slate-700 font-semibold">
@@ -87,6 +115,9 @@ const Reports_and_Analytics = () => {
                         <td className="py-4 px-4 text-slate-600 font-mono text-sm">
                           {info.transactionID}
                         </td>
+                        <td className="py-4 px-4 text-slate-600 font-mono text-sm">
+                          {info.studentClass}
+                        </td>
                         <td className="py-4 px-4 text-slate-600">
                           {info.studentEmail}
                         </td>
@@ -110,6 +141,32 @@ const Reports_and_Analytics = () => {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Chart */}
+      <div className="w-full max-w-4xl mx-auto py-8 mt-15">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">
+          Monthly Revenue by Class
+        </h2>
+
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart
+            data={chartData}
+            margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" interval={0} angle={-20} textAnchor="end" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar
+              dataKey="revenue"
+              fill="#4f46e5"
+              radius={[8, 8, 0, 0]}
+              barSize={40}
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

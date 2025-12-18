@@ -10,8 +10,9 @@ const All_Tutor = () => {
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
+    setLoading(true)
     const loadData = async () => {
-      const result = await axiosSecure(`/dynamicTutorPost/${role}`);
+      const result = await axiosSecure(`/allTutorPost/${role}`);
       setData(result.data);
       console.log("data:", result.data);
       setLoading(false);
@@ -23,7 +24,7 @@ const All_Tutor = () => {
     return <Loader></Loader>;
   }
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4 mb-30">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-center font-bold my-8 lg:my-12 text-3xl md:text-4xl lg:text-5xl text-slate-800">
           Our New Tutors
@@ -38,8 +39,8 @@ const All_Tutor = () => {
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
             >
               <div className="p-6">
-                <div>
-                  <img src="" alt="" />
+                <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
+                  <img className="rounded-full" src={tutor.Image_URL} alt="" />
                 </div>
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-slate-800 mb-1">

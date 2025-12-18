@@ -107,8 +107,7 @@ const TuitionManagement = () => {
                   {tuition.Status === "Pending" && (
                     <div className="flex gap-3">
                       <button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        
                         onClick={() => handleApproveBtn(tuition._id)}
                         className="flex-1 bg-linear-to-r from-green-500 to-green-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-green-600 hover:to-green-700 shadow-md hover:shadow-lg"
                       >
@@ -124,8 +123,7 @@ const TuitionManagement = () => {
                   )}
                   {tuition.Status === "Rejected" && (
                     <button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      
                       className="w-full bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl"
                       disabled
                     >
@@ -134,8 +132,7 @@ const TuitionManagement = () => {
                   )}
                   {tuition.Status === "Approved" && (
                     <button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      
                       className="w-full bg-linear-to-r from-green-500 to-green-600 text-white font-semibold py-2 px-4 rounded-xl"
                       disabled
                     >
