@@ -5,6 +5,11 @@ import WhyChooseUs from './WhyChooseUs';
 import DynamicStudent from './DynamicStudent';
 import DynamicTutor from './DynamicTutor';
 import BannerLogo from '../../assets/Banner-Picsart-AiImageEnhancer.jpg'
+import FAQ from './FAQ';
+import StatsSection from './StatSection';
+import TestimonialsSection from './Testimonial';
+import FeaturedSubjectsSection from './Subject';
+import LearningModesSection from './LearningMode';
 
 const Home = () => {
   
@@ -59,11 +64,26 @@ const Home = () => {
       {/* Dynamic Tutor Post */}
       <DynamicTutor></DynamicTutor>
 
+      {/* Learning Mode */}
+      <LearningModesSection></LearningModesSection>
+
       {/* How It Works Section */}
       <How_It_Works></How_It_Works>
 
       {/* Why Choose Us Section */}
       <WhyChooseUs></WhyChooseUs>
+
+      {/* Testimonial Section */}
+      <TestimonialsSection></TestimonialsSection>
+
+      {/* Stat-Section */}
+      <StatsSection></StatsSection>
+
+      {/* Subjects */}
+      <FeaturedSubjectsSection></FeaturedSubjectsSection>
+
+      {/* FAQ */}
+      <FAQ></FAQ>
     </div>
   );
 };

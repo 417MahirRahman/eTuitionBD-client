@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import Loader from "../../utilities/Loader";
 import { motion } from "motion/react";
+import SkeletonLoader from "../../utilities/SkeletonLoader";
 
 const All_Tutor = () => {
   const [data, setData] = useState([]);
@@ -21,7 +21,7 @@ const All_Tutor = () => {
   }, [axiosSecure, role]);
 
   if (loading) {
-    return <Loader></Loader>;
+    return <SkeletonLoader></SkeletonLoader>;
   }
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-8 px-4 mb-30">
@@ -29,7 +29,7 @@ const All_Tutor = () => {
         <h1 className="text-center font-bold my-8 lg:my-12 text-3xl md:text-4xl lg:text-5xl text-slate-800">
           Our New Tutors
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
           {data.map((tutor) => (
             <motion.div
               key={tutor._id}

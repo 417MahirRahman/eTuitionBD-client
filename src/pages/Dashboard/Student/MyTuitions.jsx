@@ -11,14 +11,13 @@ const MyTuitions = () => {
   const [data, setData] = useState([]);
   const [selectedTuition, setSelectedTuition] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const { register, handleSubmit, reset } = useForm();
 
   /*FETCH DATA*/
   useEffect(() => {
     setLoading(true);
     axiosSecure(`/tuitions/${user.email}`).then((res) => {
-      setData(res.data.result);
+      setData(res.data.result || []);
       setLoading(false);
       console.log("Data:", res.data.result);
     });
@@ -84,7 +83,7 @@ const MyTuitions = () => {
           </h1>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
           {data.map(
             (tuition) =>
               tuition.Status === "Approved" && (

@@ -1,6 +1,7 @@
 import React from "react";
-import { FaSquareXTwitter } from "react-icons/fa6";
 import logo from "../../../assets/logo-white.png";
+import { Link } from "react-router";
+import { Linkedin, Github } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -18,34 +19,56 @@ const Footer = () => {
         </aside>
         <nav>
           <h6 className="footer-title text-white mb-3">Quick Links</h6>
-          <a className="link link-hover text-slate-400 hover:text-blue-400 transition-colors">
-            About us
-          </a>
-          <a className="link link-hover text-slate-400 hover:text-blue-400 transition-colors">
-            Terms of use
-          </a>
-          <a className="link link-hover text-slate-400 hover:text-blue-400 transition-colors">
-            Privacy policy
-          </a>
+          <Link
+            to={"/all-tuition"}
+            className="link link-hover text-slate-400 hover:text-blue-400 transition-colors"
+          >
+            All-Tuition
+          </Link>
+          <Link
+            to={"/all-tutor"}
+            className="link link-hover text-slate-400 hover:text-blue-400 transition-colors"
+          >
+            All-Tutor
+          </Link>
+          <Link
+            to={"/aboutUs"}
+            className="link link-hover text-slate-400 hover:text-blue-400 transition-colors"
+          >
+            About
+          </Link>
+          <Link
+            to={"/contact"}
+            className="link link-hover text-slate-400 hover:text-blue-400 transition-colors"
+          >
+            Contact
+          </Link>
         </nav>
         <nav>
           <h6 className="footer-title text-white mb-3">Social Links</h6>
           <div className="flex space-x-4">
-            <a className="text-slate-400 hover:text-white transition-colors hover:cursor-pointer">
-              <FaSquareXTwitter size={24} />
+            <a
+              href="https://www.linkedin.com/in/17mefazur-rahman/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              <Linkedin className="w-6 h-6" />
             </a>
-            <a className="text-slate-400 hover:text-red-500 transition-colors hover:cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                className="fill-current"
-              >
-                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
-              </svg>
+            <a
+              href="https://github.com/417MahirRahman/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
+            >
+              <Github className="w-6 h-6" />
             </a>
-            <a className="text-slate-400 hover:text-blue-600 transition-colors hover:cursor-pointer">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.facebook.com/mahir.rahman.180624"
+              className="text-slate-400 hover:text-blue-600 transition-colors hover:cursor-pointer"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -63,10 +86,10 @@ const Footer = () => {
             Contact
           </h6>
           <a className="link link-hover text-slate-400 hover:text-blue-400">
-            Email: eTuitionBD@gmail.com
+            Email: 35mahirrahman@gmail.com
           </a>
           <a className="link link-hover text-slate-400 hover:text-blue-400">
-            Phone: 01234567890
+            Phone: 01880821924
           </a>
         </nav>
       </footer>

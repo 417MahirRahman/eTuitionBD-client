@@ -6,7 +6,7 @@ const TutorRoute = ({ children }) => {
   const [role, isRoleLoading] = useRole()
 
   if (isRoleLoading) return <Loader />
-  if (role === 'tutor') return children
+  if (role === 'tutor' || role === 'demo') return children
   return <Navigate to='/' replace='true' />
 }
 

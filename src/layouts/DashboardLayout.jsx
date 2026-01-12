@@ -97,12 +97,16 @@ const DashboardLayout = () => {
                   <span className="is-drawer-close:hidden">Homepage</span>
                 </Link>
               </li>
-              {role === "admin" && <AdminDashboardPage></AdminDashboardPage>}
+              {(role === "admin" || role === "demo") && (
+                <AdminDashboardPage></AdminDashboardPage>
+              )}
 
-              {role === "tutor" && <TutorDashboardPage></TutorDashboardPage>}
+              {(role === "tutor" || role === "demo") && (
+                <TutorDashboardPage></TutorDashboardPage>
+              )}
 
-              {role === "student" && (
-                <StudentDashboardPage></StudentDashboardPage>
+              {(role === "student" || role === "demo") && (
+                <StudentDashboardPage />
               )}
             </ul>
           </div>

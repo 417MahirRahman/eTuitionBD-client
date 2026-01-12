@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
       {
         path: "/all-tuition",
         Component: Tuition,
-        
+
         children: [
           {
             index: true,
@@ -50,19 +50,13 @@ export const router = createBrowserRouter([
           },
           {
             path: ":id",
-            element: (
-              <PrivateRoute>
-                <TuitionDetails></TuitionDetails>
-              </PrivateRoute>
-            ),
+            element: <TuitionDetails></TuitionDetails>,
           },
         ],
       },
       {
         path: "/all-tutor",
-        element: <PrivateRoute>
-          <All_Tutor></All_Tutor>
-        </PrivateRoute>
+        element: <All_Tutor></All_Tutor>,
       },
       {
         path: "/profileSettings",
@@ -89,9 +83,9 @@ export const router = createBrowserRouter([
         Component: Register,
       },
       {
-        path:"/tuitionPostNotFound",
+        path: "/tuitionPostNotFound",
         Component: TuitionPostNotFound,
-      }
+      },
     ],
   },
   {

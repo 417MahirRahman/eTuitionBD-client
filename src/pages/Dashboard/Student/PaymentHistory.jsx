@@ -13,7 +13,7 @@ const PaymentHistory = () => {
     setLoading(true);
     const loadData = async () => {
       const result = await axiosSecure(`/studentPayment/${user.email}`);
-      setData(result.data.result);
+      setData(result.data.result  || []);
       setLoading(false);
     };
     loadData();

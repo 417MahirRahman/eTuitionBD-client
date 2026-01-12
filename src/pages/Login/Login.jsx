@@ -20,6 +20,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
   const loginMutation = useMutation({
@@ -90,6 +91,18 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  // Demo Login
+  const handleDemoLogin = () => {
+    setValue("email", "demo123@gmail.com");
+    setValue("password", "Demo123");
+
+    // Optional auto login
+    loginMutation.mutate({
+      email: "demo123@gmail.com",
+      password: "Demo123",
+    });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 max-w-md w-full">
@@ -141,8 +154,6 @@ const Login = () => {
           </div>
 
           <button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
             type="submit"
             className="w-full bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
           >
@@ -182,6 +193,14 @@ const Login = () => {
               </g>
             </svg>
             Login with Google
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            className="w-full bg-slate-100 text-slate-700 font-semibold py-3 px-6 rounded-xl hover:bg-slate-200 transition shadow-sm"
+          >
+            Demo Login
           </button>
 
           <p className="text-center mt-6 text-slate-600">

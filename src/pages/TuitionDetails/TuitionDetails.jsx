@@ -35,9 +35,11 @@ const TuitionDetails = () => {
         return;
       }
       const res = await axiosSecure(`allTuitions/${id}`);
-      const res2 = await axiosSecure(`/users/${user.email}`)
+      if (user){
+        const res2 = await axiosSecure(`/users/${user.email}`)
+        setUserData(res2.data.result)
+      }
       setData(res.data.result);
-      setUserData(res2.data.result)
       //console.log("Data:", res.data.result);
       //console.log("Data2:", res2.data.result);
       setLoading(false);

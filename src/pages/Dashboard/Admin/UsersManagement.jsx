@@ -19,25 +19,33 @@ const UsersManagement = () => {
     formState: { errors },
   } = useForm();
 
-  //FETCH USERS
+  // Fetch users
   useEffect(() => {
     setLoading(true);
-    axiosSecure.get("/allUsers").then((res) => {
-      setData(res.data);
-      setLoading(false);
-    });
+    const fetchUsers = async () => {
+      try {
+        const res = await axiosSecure.get("/allUsers");
+        setData(Array.isArray(res.data) ? res.data : res.data?.result || []);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+        setData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
   }, [axiosSecure, user]);
 
   if (loading) return <Loader />;
 
-  //OPEN MODAL
+  // Open modal
   const openModal = (userData) => {
     setSelectedUser(userData);
     reset(userData);
-    document.getElementById("update_user_modal").showModal();
+    document.getElementById("update_user_modal")?.showModal();
   };
 
-  //UPDATE USER
+  // Update user
   const handleUpdateUser = async (formData) => {
     try {
       await axiosSecure.put(`/updateUsers/${selectedUser._id}`, formData);
@@ -48,16 +56,21 @@ const UsersManagement = () => {
         )
       );
 
-      document.getElementById("update_user_modal").close();
+      document.getElementById("update_user_modal")?.close();
       setSelectedUser(null);
       Swal.fire("Updated!", "User updated successfully", "success");
-    } catch {
+    } catch (err) {
+      console.error(err);
       Swal.fire("Error", "Update failed", "error");
     }
   };
 
-  //DELETE USER
+  // Delete user
   const handleDelete = async (id) => {
+    if (user.email === "demo@example.com") {
+      return Swal.fire("Demo User", "Cannot delete users in demo mode", "info");
+    }
+
     const confirm = await Swal.fire({
       title: "Are you sure?",
       icon: "warning",
@@ -65,253 +78,106 @@ const UsersManagement = () => {
     });
 
     if (confirm.isConfirmed) {
-      await axiosSecure.delete(`/allUsers/${id}`);
-      setData((prev) => prev.filter((item) => item._id !== id));
-      Swal.fire("Deleted!", "User removed successfully", "success");
+      try {
+        await axiosSecure.delete(`/allUsers/${id}`);
+        setData((prev) => prev.filter((item) => item._id !== id));
+        Swal.fire("Deleted!", "User removed successfully", "success");
+      } catch (err) {
+        console.error(err);
+        Swal.fire("Error!", "Failed to delete user", "error");
+      }
     }
   };
+
+  // Helper to render users by role
+  const renderUsersByRole = (role) =>
+    (data || [])
+      .filter((userData) => userData.role === role)
+      .map((userData) => (
+        <div
+          key={userData._id}
+          className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
+        >
+          <div className="p-6">
+            <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-xl">
+              <img
+                className="rounded-full w-16 h-16 object-cover"
+                src={userData.Image_URL}
+                alt={userData.name}
+              />
+            </div>
+
+            <div className="mb-4">
+              <h3 className="text-xl font-bold text-slate-800 mb-1">
+                {userData.name || "N/A"}
+              </h3>
+              <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
+            </div>
+
+            <div className="space-y-2 text-slate-600">
+              <p>
+                <span className="font-semibold text-slate-700 mr-2">Email:</span>
+                {userData.email || "-"}
+              </p>
+              <p>
+                <span className="font-semibold text-slate-700 mr-2">Role:</span>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    userData.role === "admin"
+                      ? "bg-purple-100 text-purple-700"
+                      : userData.role === "tutor"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-blue-100 text-blue-700"
+                  }`}
+                >
+                  {userData.role || "-"}
+                </span>
+              </p>
+              <p>
+                <span className="font-semibold text-slate-700 mr-2">Phone:</span>
+                {userData.phoneNumber || "-"}
+              </p>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => openModal(userData)}
+                className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
+              >
+                Update
+              </button>
+              <button
+                onClick={() => handleDelete(userData._id)}
+                className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      ));
 
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
-        {data.length === 0 ? (
+        {(!data || data.length === 0) && (
           <div className="flex justify-center items-center min-h-96">
-            <p className="text-3xl md:text-4xl text-slate-600">
-              No Users Found
-            </p>
+            <p className="text-3xl md:text-4xl text-slate-600">No Users Found</p>
           </div>
-        ) : (
-          <h1 className="text-center font-bold mb-8 text-3xl md:text-4xl text-slate-800">
-            Users Management
-          </h1>
         )}
 
-        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">
-          Admin:
-        </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-20">
-          {data.map(
-            (userData) =>
-              userData.role === "admin" && (
-                <div
-                  key={userData._id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
-                >
-                  <div className="p-6">
-                    <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
-                      <img
-                        className="rounded-full"
-                        src={userData.Image_URL}
-                        alt=""
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <h3 className="text-xl font-bold text-slate-800 mb-1">
-                        User: {userData.name}
-                      </h3>
-                      <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
-                    </div>
-                    <div className="space-y-3 text-slate-600">
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Email:
-                        </span>
-                        {userData.email}
-                      </p>
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Role:
-                        </span>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            userData.role === "admin"
-                              ? "bg-purple-100 text-purple-700"
-                              : userData.role === "tutor"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}
-                        >
-                          {userData.role}
-                        </span>
-                      </p>
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Phone:
-                        </span>
-                        {userData.phoneNumber}
-                      </p>
-                    </div>
-                    <div className="flex gap-3 mt-6">
-                      <button
-                        onClick={() => openModal(userData)}
-                        className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => handleDelete(userData._id)}
-                        className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )
-          )}
-        </div>
+        {["admin", "tutor", "student"].map((role) => (
+          <div key={role}>
+            <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800 capitalize">
+              {role}s
+            </h1>
+            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-20`}>
+              {renderUsersByRole(role)}
+            </div>
+          </div>
+        ))}
 
-        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">
-          Tutor:
-        </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-20">
-          {data.map(
-            (userData) =>
-              userData.role === "tutor" && (
-                <div
-                  key={userData._id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
-                >
-                  <div className="p-6">
-                    <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
-                      <img
-                        className="rounded-full"
-                        src={userData.Image_URL}
-                        alt=""
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <h3 className="text-xl font-bold text-slate-800 mb-1">
-                        User: {userData.name}
-                      </h3>
-                      <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
-                    </div>
-                    <div className="space-y-3 text-slate-600">
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Email:
-                        </span>
-                        {userData.email}
-                      </p>
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Role:
-                        </span>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            userData.role === "admin"
-                              ? "bg-purple-100 text-purple-700"
-                              : userData.role === "tutor"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}
-                        >
-                          {userData.role}
-                        </span>
-                      </p>
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Phone:
-                        </span>
-                        {userData.phoneNumber}
-                      </p>
-                    </div>
-                    <div className="flex gap-3 mt-6">
-                      <button
-                        onClick={() => openModal(userData)}
-                        className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => handleDelete(userData._id)}
-                        className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )
-          )}
-        </div>
-
-        <h1 className="font-semibold mb-2 text-2xl md:text-3xl text-slate-800">
-          Student:
-        </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {data.map(
-            (userData) =>
-              userData.role === "student" && (
-                <div
-                  key={userData._id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-slate-200"
-                >
-                  <div className="p-6">
-                    <div className="flex justify-center items-center mb-5 border-2 border-blue-500 bg-blue-500 rounded-4xl">
-                      <img
-                        className="rounded-full"
-                        src={userData.Image_URL}
-                        alt=""
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <h3 className="text-xl font-bold text-slate-800 mb-1">
-                        User: {userData.name}
-                      </h3>
-                      <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-blue-600 rounded-full"></div>
-                    </div>
-                    <div className="space-y-3 text-slate-600">
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Email:
-                        </span>
-                        {userData.email}
-                      </p>
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Role:
-                        </span>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            userData.role === "admin"
-                              ? "bg-purple-100 text-purple-700"
-                              : userData.role === "tutor"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}
-                        >
-                          {userData.role}
-                        </span>
-                      </p>
-                      <p className="flex items-start">
-                        <span className="font-semibold text-slate-700 mr-2">
-                          Phone:
-                        </span>
-                        {userData.phoneNumber}
-                      </p>
-                    </div>
-                    <div className="flex gap-3 mt-6">
-                      <button
-                        onClick={() => openModal(userData)}
-                        className="flex-1 bg-linear-to-r from-blue-500 to-blue-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg"
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => handleDelete(userData._id)}
-                        className="flex-1 bg-linear-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )
-          )}
-        </div>
-
-        {/*SINGLE MODAL*/}
+        {/* Modal */}
         <dialog id="update_user_modal" className="modal">
           <div className="modal-box bg-white text-black rounded-2xl border border-slate-200 shadow-2xl">
             <form onSubmit={handleSubmit(handleUpdateUser)}>
@@ -393,7 +259,7 @@ const UsersManagement = () => {
                   type="button"
                   className="bg-slate-200 text-slate-700 font-semibold py-2.5 px-6 rounded-xl hover:bg-slate-300"
                   onClick={() =>
-                    document.getElementById("update_user_modal").close()
+                    document.getElementById("update_user_modal")?.close()
                   }
                 >
                   Cancel

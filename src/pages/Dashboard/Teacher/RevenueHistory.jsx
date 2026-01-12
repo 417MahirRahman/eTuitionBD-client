@@ -14,7 +14,7 @@ const RevenueHistory = () => {
     setLoading(true);
     const loadData = async () => {
       const result = await axiosSecure(`/tutorRevenue/${user.email}`);
-      setData(result.data.result);
+      setData(result.data.result || []);
       setLoading(false);
     };
     loadData();

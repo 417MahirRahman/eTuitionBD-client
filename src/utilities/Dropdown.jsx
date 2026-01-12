@@ -14,18 +14,18 @@ const Dropdown = () => {
   const [role] = useRole();
 
   useEffect(() => {
-      const loadData = async () => {
-        const result = await axiosSecure(`/users/${user.email}`);
-        setData(result.data.result);
-        console.log("data:", result.data.result);
-        setLoading(false);
-      };
-      loadData();
-    }, [axiosSecure, user]);
-  
-    if (loading) {
-      return <Loader></Loader>;
-    }
+    const loadData = async () => {
+      const result = await axiosSecure(`/users/${user.email}`);
+      setData(result.data.result);
+      console.log("data:", result.data.result);
+      setLoading(false);
+    };
+    loadData();
+  }, [axiosSecure, user]);
+
+  if (loading) {
+    return <Loader></Loader>;
+  }
 
   const handleLogOut = () => {
     logOut()
@@ -57,70 +57,89 @@ const Dropdown = () => {
         });
       });
   };
+
   return (
     <div>
       <details className="dropdown dropdown-bottom dropdown-end">
         <summary className="border w-10 avatar rounded-full m-1">
           <img
             className="rounded-full avatar"
-            src={data.Image_URL}
+            src={data?.Image_URL || "https://i.ibb.co.com/WWfZbmXY/12.png"}
             alt=""
           />
         </summary>
         <ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm">
-          <li className="flex gap-1">
-            <div>
-              <User />
-              <NavLink to={"/profileSettings"} className="text-black font-bold">
-                Profile
-              </NavLink>
-            </div>
+          <li>
+            <NavLink
+              to={"/profileSettings"}
+              className="flex items-center gap-3 text-black font-bold"
+            >
+              <User className="w-4 h-4" />
+              Profile
+            </NavLink>
           </li>
-          <li className="flex gap-1">
-            <div>
-              <LayoutDashboard />
-              {/* student */}
-              {role === "student" && (
-                <NavLink
-                  to={"/dashboard/myTuitions"}
-                  className="text-black font-bold"
-                >
-                  Dashboard
-                </NavLink>
-              )}
 
-              {/* Teacher */}
-              {role === "tutor" && (
-                <NavLink
-                  to={"/dashboard/myApplication"}
-                  className="text-black font-bold"
-                >
-                  Dashboard
-                </NavLink>
-              )}
-              
-              {/* Admin */}
-              {role === "admin" && (
-                <NavLink
-                  to={"/dashboard/reportAnalytics"}
-                  className="text-black font-bold"
-                >
-                  Dashboard
-                </NavLink>
-              )}
-            </div>
-          </li>
-          <li className="flex gap-1">
-            <div>
-              <LogOut />
-              <Link
-                onClick={handleLogOut}
-                to={"/login"}
-                className="font-bold text-black"
+          {/* Demo-User */}
+          {role === "demo" && (
+            <li>
+              <NavLink
+                to={"/dashboard/reportAnalytics"}
+                className="flex items-center gap-3 text-black font-bold"
               >
-                Log Out
-              </Link>
-            </div>
+                <LayoutDashboard className="w-4 h-4" />
+                Dashboard
+              </NavLink>
+            </li>
+          )}
+
+          {/* student */}
+          {role === "student" && (
+            <li>
+              <NavLink
+                to={"/dashboard/myTuitions"}
+                className="flex items-center gap-3 text-black font-bold"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                Dashboard
+              </NavLink>
+            </li>
+          )}
+
+          {/* Teacher */}
+          {role === "tutor" && (
+            <li>
+              <NavLink
+                to={"/dashboard/myApplication"}
+                className="flex items-center gap-3 text-black font-bold"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                Dashboard
+              </NavLink>
+            </li>
+          )}
+
+          {/* Admin */}
+          {role === "admin" && (
+            <li>
+              <NavLink
+                to={"/dashboard/reportAnalytics"}
+                className="flex items-center gap-3 text-black font-bold"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                Dashboard
+              </NavLink>
+            </li>
+          )}
+
+          <li>
+            <Link
+              onClick={handleLogOut}
+              to={"/login"}
+              className="flex items-center gap-3 font-bold text-black"
+            >
+              <LogOut className="w-4 h-4" />
+              Log Out
+            </Link>
           </li>
         </ul>
       </details>

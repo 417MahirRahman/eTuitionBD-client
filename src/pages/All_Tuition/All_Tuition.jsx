@@ -4,6 +4,7 @@ import AuthContext from "../../providers/AuthContext";
 import Loader from "../../utilities/Loader";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { motion } from "motion/react";
+import SkeletonLoader from "../../utilities/SkeletonLoader";
 
 const All_Tuition = () => {
   const { user } = useContext(AuthContext);
@@ -21,7 +22,7 @@ const All_Tuition = () => {
     subject: "",
     location: "",
   });
-  const limit = 6;
+  const limit = 8;
 
   useEffect(() =>{
     const timer = setTimeout(()=>{
@@ -50,7 +51,7 @@ const All_Tuition = () => {
   }, [user, axiosSecure, currentPage, sort, search, filters]);
 
   if (loading) {
-    return <Loader />;
+    return <SkeletonLoader></SkeletonLoader>;
   }
 
   //Sort By Function
@@ -213,7 +214,7 @@ const All_Tuition = () => {
             <p className="text-slate-500 text-xl">No Tuitions Found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
             {data.map((tuition) => (
               <motion.div
                 key={tuition._id}

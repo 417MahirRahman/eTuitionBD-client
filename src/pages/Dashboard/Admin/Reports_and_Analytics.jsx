@@ -18,45 +18,50 @@ const Reports_and_Analytics = () => {
   const [loading, setLoading] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
 
+  // Fetch data safely
   useEffect(() => {
     setLoading(true);
     const loadData = async () => {
-      const result = await axiosSecure("/allPaymentInfo");
-      setData(result.data);
-      console.log("Data:", result.data);
-      setLoading(false);
+      try {
+        const result = await axiosSecure("/allPaymentInfo");
+        // always ensure result.data is an array
+        setData(Array.isArray(result.data) ? result.data : result.data?.result || []);
+        console.log("Data:", result.data);
+      } catch (err) {
+        console.error("Error fetching payment info:", err);
+        setData([]); // fallback to empty array
+      } finally {
+        setLoading(false);
+      }
     };
     loadData();
   }, [axiosSecure]);
 
+  // Calculate total revenue safely
   useEffect(() => {
-    const total = data.reduce((sum, item) => sum + item.Amount, 0);
+    const total = (data || []).reduce((sum, item) => sum + Number(item.Amount || 0), 0);
     setTotalAmount(total);
   }, [data]);
 
-  if (loading) {
-    return <Loader />;
-  }
+  if (loading) return <Loader />;
 
-  //Chart Data
+  // Prepare chart data safely
   const chartData = Array.from({ length: 12 }, (_, i) => ({
     name: `Class:${i + 1}`,
     revenue: 0,
   }));
 
-  data.forEach((item) => {
+  (data || []).forEach((item) => {
     const index = Number(item.studentClass) - 1;
     if (index >= 0 && index < chartData.length) {
-      chartData[index].revenue += Number(item.Amount);
+      chartData[index].revenue += Number(item.Amount || 0);
     }
   });
-
-  console.log("chart:", chartData);
 
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
-        {data.length === 0 ? (
+        {(!data || data.length === 0) ? (
           <div className="flex flex-col items-center justify-center min-h-96">
             <p className="text-3xl md:text-4xl text-slate-600">
               No Payment Data Found
@@ -77,62 +82,27 @@ const Reports_and_Analytics = () => {
                 <table className="table w-full">
                   <thead className="bg-slate-50">
                     <tr className="text-center border-b border-slate-200">
-                      <th className="py-4 px-4 text-slate-700 font-semibold">
-                        Serial
-                      </th>
-                      <th className="py-4 px-4 text-slate-700 font-semibold">
-                        Transaction ID
-                      </th>
-                      <th className="py-4 px-4 text-slate-700 font-semibold">
-                        Class
-                      </th>
-                      <th className="py-4 px-4 text-slate-700 font-semibold">
-                        From
-                      </th>
-                      <th className="py-4 px-4 text-slate-700 font-semibold">
-                        To
-                      </th>
-                      <th className="py-4 px-4 text-slate-700 font-semibold">
-                        Amount
-                      </th>
-                      <th className="py-4 px-4 text-slate-700 font-semibold">
-                        Status
-                      </th>
-                      <th className="py-4 px-4 text-slate-700 font-semibold">
-                        Date
-                      </th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">Serial</th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">Transaction ID</th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">Class</th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">From</th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">To</th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">Amount</th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">Status</th>
+                      <th className="py-4 px-4 text-slate-700 font-semibold">Date</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((info, index) => (
-                      <tr
-                        key={info._id}
-                        className="text-center hover:bg-slate-50 transition-colors"
-                      >
-                        <td className="py-4 px-4 text-slate-600 font-medium">
-                          {index + 1}
-                        </td>
-                        <td className="py-4 px-4 text-slate-600 font-mono text-sm">
-                          {info.transactionID}
-                        </td>
-                        <td className="py-4 px-4 text-slate-600 font-mono text-sm">
-                          {info.studentClass}
-                        </td>
-                        <td className="py-4 px-4 text-slate-600">
-                          {info.studentEmail}
-                        </td>
-                        <td className="py-4 px-4 text-slate-600">
-                          {info.tutorEmail}
-                        </td>
-                        <td className="py-4 px-4 text-green-600 font-semibold">
-                          {info.Amount}
-                        </td>
-                        <td className="py-4 px-4 text-green-600 font-semibold">
-                          {info.paymentStatus}
-                        </td>
-                        <td className="py-4 px-4 text-slate-600">
-                          {info.paidTime}
-                        </td>
+                    {(data || []).map((info, index) => (
+                      <tr key={info._id || index} className="text-center hover:bg-slate-50 transition-colors">
+                        <td className="py-4 px-4 text-slate-600 font-medium">{index + 1}</td>
+                        <td className="py-4 px-4 text-slate-600 font-mono text-sm">{info.transactionID || "-"}</td>
+                        <td className="py-4 px-4 text-slate-600 font-mono text-sm">{info.studentClass || "-"}</td>
+                        <td className="py-4 px-4 text-slate-600">{info.studentEmail || "-"}</td>
+                        <td className="py-4 px-4 text-slate-600">{info.tutorEmail || "-"}</td>
+                        <td className="py-4 px-4 text-green-600 font-semibold">{info.Amount || 0}</td>
+                        <td className="py-4 px-4 text-green-600 font-semibold">{info.paymentStatus || "-"}</td>
+                        <td className="py-4 px-4 text-slate-600">{info.paidTime ? new Date(info.paidTime).toLocaleString() : "-"}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -150,21 +120,13 @@ const Reports_and_Analytics = () => {
         </h2>
 
         <ResponsiveContainer width="100%" height={400}>
-          <BarChart
-            data={chartData}
-            margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-          >
+          <BarChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" interval={0} angle={-20} textAnchor="end" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar
-              dataKey="revenue"
-              fill="#4f46e5"
-              radius={[8, 8, 0, 0]}
-              barSize={40}
-            />
+            <Bar dataKey="revenue" fill="#4f46e5" radius={[8, 8, 0, 0]} barSize={40} />
           </BarChart>
         </ResponsiveContainer>
       </div>

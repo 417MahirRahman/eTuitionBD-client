@@ -23,7 +23,7 @@ const MyApplication = () => {
   useEffect(() => {
     setLoading(true);
     axiosSecure(`/tutorApplication/${user.email}`).then((res) => {
-      setData(res.data.result);
+      setData(res.data.result || []);
       console.log(res.data.result);
       setLoading(false);
     });
@@ -88,7 +88,7 @@ const MyApplication = () => {
           </h1>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
           {pendingApplications.map((app) => (
             <div
               key={app._id}
